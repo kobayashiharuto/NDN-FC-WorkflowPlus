@@ -1,0 +1,8 @@
+def build(bld):
+    for ex in bld.path.ant_glob('*.cpp'):
+        name = ex.change_ext('').path_from(bld.path.get_bld())
+        bld.program(
+            features='cxx cxxprogram',
+            target=name,
+            source=[ex]
+        )

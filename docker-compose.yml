@@ -1,0 +1,30 @@
+version: "3"
+services:
+  ndn-producer:
+    build:
+      context: .
+    networks:
+      - ndn-network
+    volumes:
+      - ./work:/work
+    tty: true
+  ndn-consumer:
+    build:
+      context: .
+    networks:
+      - ndn-network
+    volumes:
+      - ./work:/work
+    tty: true
+  ndn-function:
+    build:
+      context: .
+    networks:
+      - ndn-network
+    volumes:
+      - ./work:/work
+    tty: true
+
+networks:
+  ndn-network:
+    name: ndn-network

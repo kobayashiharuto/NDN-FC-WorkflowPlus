@@ -1,0 +1,15 @@
+def options(opt):
+    opt.load('compiler_cxx')
+    opt.add_option('--with-examples', action='store_true',
+                   default=False, help='Build examples')
+
+
+def configure(conf):
+    conf.load('compiler_cxx')
+
+
+def build(bld):
+    bld.load('compiler_cxx')
+    if bld.options.with_examples:
+        bld.recurse('examples')  # examples 配下にある wscprit を読み取って実行している
+    bld(features='cxx cxxprogram', source='main.cpp', target='app')

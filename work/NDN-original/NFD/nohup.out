@@ -1,0 +1,72 @@
+NFD version 22.12-10-g6bf94c02 starting
+Built with GNU C++ version 9.4.0, with GNU libstdc++ version 20210601, with Boost version 1.71.0, with libpcap version 1.9.1 (with TPACKET_V3), with WebSocket++ version 0.8.1, with ndn-cxx version 0.8.1-24-g67bc114a
+1698637399.574685  INFO: [nfd.FaceTable] Added face id=255 remote=null:// local=null://
+1698637399.574724  INFO: [nfd.FaceTable] Added face id=254 remote=contentstore:// local=contentstore://
+1698637399.574800  INFO: [nfd.CsPolicy] setLimit 10
+1698637399.574874  INFO: [nfd.StrategyChoice] setDefaultStrategy /localhost/nfd/strategy/best-route/v=5
+1698637399.575091  INFO: [nfd.FaceTable] Added face id=1 remote=internal:// local=internal://
+1698637399.575475  WARN: [nfd.CommandAuthenticator] 'certfile any' is intended for demo purposes only and SHOULD NOT be used in production environments
+1698637399.575581  INFO: [nfd.StrategyChoice] changeStrategy(/ndn/broadcast) /localhost/nfd/strategy/best-route/v=5 -> /localhost/nfd/strategy/multicast/v=4
+1698637399.575590  INFO: [nfd.StrategyChoice] changeStrategy(/localhost) /localhost/nfd/strategy/best-route/v=5 -> /localhost/nfd/strategy/multicast/v=4
+1698637399.575596  INFO: [nfd.StrategyChoice] changeStrategy(/localhost/nfd) /localhost/nfd/strategy/multicast/v=4 -> /localhost/nfd/strategy/best-route/v=5
+1698637399.575599  INFO: [nfd.CsPolicy] setLimit 65536
+1698637399.575601  INFO: [nfd.CsPolicy] setLimit 65536
+1698637399.575606  INFO: [nfd.EthernetFactory] enabling multicast on 01:00:5e:00:17:aa
+1698637399.575635  INFO: [nfd.TcpChannel] [tcp4://0.0.0.0:6363] Creating channel
+1698637399.575705  INFO: [nfd.TcpChannel] [tcp6://[::]:6363] Creating channel
+1698637399.575778  INFO: [nfd.UdpChannel] [udp4://0.0.0.0:6363] Creating channel
+1698637399.575841  INFO: [nfd.UdpChannel] [udp6://[::]:6363] Creating channel
+1698637399.575870  INFO: [nfd.UdpFactory] enabling multicast on 224.0.23.170:56363
+1698637399.575877  INFO: [nfd.UdpFactory] enabling multicast on [ff02::1234]:56363
+1698637399.576048  INFO: [nfd.UnixStreamChannel] [unix:///run/nfd.sock] Creating channel
+1698637399.576254  INFO: [nfd.WebSocketChannel] [ws://0.0.0.0:9696] Creating channel
+1698637399.576368  INFO: [nfd.WebSocketChannel] [ws://[::]:9696] Creating channel
+1698637399.576413  WARN: [nfd.CommandAuthenticator] 'certfile any' is intended for demo purposes only and SHOULD NOT be used in production environments
+1698637399.576427  INFO: [nfd.CommandAuthenticator] authorize module=faces signer=any
+1698637399.576430  INFO: [nfd.CommandAuthenticator] authorize module=fib signer=any
+1698637399.576431  INFO: [nfd.CommandAuthenticator] authorize module=cs signer=any
+1698637399.576432  INFO: [nfd.CommandAuthenticator] authorize module=strategy-choice signer=any
+1698637399.577182  INFO: [nfd.EthernetChannel] [dev://eth0] Creating channel
+1698637399.581311  INFO: [nfd.RibManager] Start monitoring face create/destroy events
+1698637399.638598  INFO: [nfd.FaceTable] Added face id=256 remote=ether://[01:00:5e:00:17:aa] local=dev://eth0
+1698637399.639568  INFO: [nfd.FaceTable] Added face id=257 remote=fd://26 local=unix:///run/nfd.sock
+1698637399.640321  INFO: [nfd.FaceTable] Added face id=258 remote=udp4://224.0.23.170:56363 local=udp4://172.28.0.5:35127
+1698637420.713035  INFO: [nfd.Main] Caught signal 15 (Terminated), exiting...
+NFD version 22.12-10-g6bf94c02 starting
+Built with GNU C++ version 9.4.0, with GNU libstdc++ version 20210601, with Boost version 1.71.0, with libpcap version 1.9.1 (with TPACKET_V3), with WebSocket++ version 0.8.1, with ndn-cxx version 0.8.1-24-g67bc114a
+1698637485.423799  INFO: [nfd.FaceTable] Added face id=255 remote=null:// local=null://
+1698637485.423837  INFO: [nfd.FaceTable] Added face id=254 remote=contentstore:// local=contentstore://
+1698637485.423984  INFO: [nfd.CsPolicy] setLimit 10
+1698637485.424050  INFO: [nfd.StrategyChoice] setDefaultStrategy /localhost/nfd/strategy/best-route/v=5
+1698637485.424123  INFO: [nfd.FaceTable] Added face id=1 remote=internal:// local=internal://
+1698637485.424495  WARN: [nfd.CommandAuthenticator] 'certfile any' is intended for demo purposes only and SHOULD NOT be used in production environments
+1698637485.424611  INFO: [nfd.StrategyChoice] changeStrategy(/ndn/broadcast) /localhost/nfd/strategy/best-route/v=5 -> /localhost/nfd/strategy/multicast/v=4
+1698637485.424621  INFO: [nfd.StrategyChoice] changeStrategy(/localhost) /localhost/nfd/strategy/best-route/v=5 -> /localhost/nfd/strategy/multicast/v=4
+1698637485.424626  INFO: [nfd.StrategyChoice] changeStrategy(/localhost/nfd) /localhost/nfd/strategy/multicast/v=4 -> /localhost/nfd/strategy/best-route/v=5
+1698637485.424629  INFO: [nfd.CsPolicy] setLimit 65536
+1698637485.424632  INFO: [nfd.CsPolicy] setLimit 65536
+1698637485.424637  INFO: [nfd.EthernetFactory] enabling multicast on 01:00:5e:00:17:aa
+1698637485.424674  INFO: [nfd.TcpChannel] [tcp4://0.0.0.0:6363] Creating channel
+1698637485.424765  INFO: [nfd.TcpChannel] [tcp6://[::]:6363] Creating channel
+1698637485.424860  INFO: [nfd.UdpChannel] [udp4://0.0.0.0:6363] Creating channel
+1698637485.425063  INFO: [nfd.UdpChannel] [udp6://[::]:6363] Creating channel
+1698637485.425108  INFO: [nfd.UdpFactory] enabling multicast on 224.0.23.170:56363
+1698637485.425116  INFO: [nfd.UdpFactory] enabling multicast on [ff02::1234]:56363
+1698637485.425158  INFO: [nfd.UnixStreamChannel] [unix:///run/nfd.sock] Creating channel
+1698637485.425286  INFO: [nfd.WebSocketChannel] [ws://0.0.0.0:9696] Creating channel
+1698637485.425376  INFO: [nfd.WebSocketChannel] [ws://[::]:9696] Creating channel
+1698637485.425424  WARN: [nfd.CommandAuthenticator] 'certfile any' is intended for demo purposes only and SHOULD NOT be used in production environments
+1698637485.425435  INFO: [nfd.CommandAuthenticator] authorize module=faces signer=any
+1698637485.425437  INFO: [nfd.CommandAuthenticator] authorize module=fib signer=any
+1698637485.425439  INFO: [nfd.CommandAuthenticator] authorize module=cs signer=any
+1698637485.425440  INFO: [nfd.CommandAuthenticator] authorize module=strategy-choice signer=any
+1698637485.426079  INFO: [nfd.EthernetChannel] [dev://eth0] Creating channel
+1698637485.427544  INFO: [nfd.RibManager] Start monitoring face create/destroy events
+1698637485.484507  INFO: [nfd.FaceTable] Added face id=256 remote=ether://[01:00:5e:00:17:aa] local=dev://eth0
+1698637485.485344  INFO: [nfd.FaceTable] Added face id=257 remote=fd://26 local=unix:///run/nfd.sock
+1698637485.485675  INFO: [nfd.FaceTable] Added face id=258 remote=udp4://224.0.23.170:56363 local=udp4://172.28.0.4:36713
+1698637569.253345  INFO: [nfd.FaceTable] Added face id=259 remote=fd://29 local=unix:///run/nfd.sock
+1698637569.258401  INFO: [nfd.Transport] [id=259,local=unix:///run/nfd.sock,remote=fd://29] setState UP -> CLOSING
+1698637569.258427  INFO: [nfd.Transport] [id=259,local=unix:///run/nfd.sock,remote=fd://29] setState CLOSING -> CLOSED
+1698637569.258548  INFO: [nfd.FaceTable] Removed face id=259 remote=fd://29 local=unix:///run/nfd.sock
+1698637606.465633  INFO: [nfd.Main] Caught signal 15 (Terminated), exiting...
