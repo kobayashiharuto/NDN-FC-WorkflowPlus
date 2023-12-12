@@ -16,7 +16,7 @@ spec:
         - name: ndn-producer
           image: harutokobayashi/ndn-fc-workflow-plus:1.0
           volumeMounts:
-            - mountPath: "/work"
+            - mountPath: "/home/kobayashi/NDN-FC-WorkflowPlus/work"
               name: work-volume
       volumes:
         - name: work-volume
