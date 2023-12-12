@@ -1,0 +1,10 @@
+prefix=/usr/local
+exec_prefix=/usr/local
+libdir=/usr/local/lib
+includedir=/usr/local/include
+
+Name: libndn-cxx
+Description: NDN C++ library with eXperimental eXtensions
+Version: 0.8.1
+Libs: -L${libdir} -pthread -L/usr/lib/aarch64-linux-gnu -L/usr/lib -lndn-cxx -lboost_system -lboost_program_options -lboost_chrono -lboost_date_time -lboost_filesystem -lboost_thread -lboost_log -lboost_stacktrace_backtrace -lcrypto -lsqlite3 -latomic -lrt -lpthread 
+Cflags: -I${includedir} -pthread -DBOOST_STACKTRACE_DYN_LINK -DBOOST_LOG_DYN_LINK -DBOOST_FILESYSTEM_NO_DEPRECATED -I/usr/include

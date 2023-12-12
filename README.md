@@ -112,8 +112,7 @@ git clone https://github.com/kobayashiharuto/NDN-FC-WorkflowPlus.git
 ```
 
 ```provider
-cd ./work/NDN-original/
-sh setup.sh
+sh /home/NDN-FC-WorkflowPlus/work/NDN-original/sh_k8s/setup.sh
 nfd-start
 sh prod_re.sh
 ```
