@@ -91,3 +91,15 @@ sh reinstall.sh
 nfd-start
 sh cons_re.sh
 ```
+
+## k8s
+
+### 実行
+```
+kubectl apply -f ./k8s
+```
+
+### コンテナに入る
+```
+kubectl exec -it <ポッド名> -- /bin/bash
+```

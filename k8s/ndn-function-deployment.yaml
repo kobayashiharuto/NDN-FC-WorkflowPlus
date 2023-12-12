@@ -18,6 +18,8 @@ spec:
           volumeMounts:
             - mountPath: "/home/kobayashi/NDN-FC-WorkflowPlus/work"
               name: work-volume
+          tty: true
+          stdin: true
       volumes:
         - name: work-volume
           emptyDir: {}
