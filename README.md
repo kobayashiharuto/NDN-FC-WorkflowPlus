@@ -103,3 +103,24 @@ kubectl apply -f ./k8s
 ```
 kubectl exec -it <ポッド名> -- /bin/bash
 ```
+
+### それぞれにコードを持ってくる
+
+```
+cd NDN-FC-WorkflowPlus/
+git clone https://github.com/kobayashiharuto/NDN-FC-WorkflowPlus.git
+```
+
+```provider
+cd ./work/NDN-original/
+sh setup.sh
+nfd-start
+sh prod_re.sh
+```
+
+```consumer
+cd ./work/NDN-original/
+sh reinstall.sh
+nfd-start
+sh cons_re.sh
+```
