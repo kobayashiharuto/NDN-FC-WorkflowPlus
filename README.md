@@ -101,25 +101,33 @@ kubectl apply -f ./k8s
 
 ### コンテナに入る
 ```
+kubectl get pods
 kubectl exec -it <ポッド名> -- /bin/bash
 ```
 
 ### それぞれにコードを持ってくる
 
 ```
-cd NDN-FC-WorkflowPlus/
+cd /home
 git clone https://github.com/kobayashiharuto/NDN-FC-WorkflowPlus.git
 ```
 
-```provider
-sh /home/NDN-FC-WorkflowPlus/work/NDN-original/sh_k8s/setup.sh
+```consumer
+cd /home/NDN-FC-WorkflowPlus/work/NDN-original
+sh ./sh_k8s/setup.sh
 nfd-start
-sh prod_re.sh
+ifconfig
+nfdc face create udp://10.244.18.7
+nfdc route add prefix / nexthop udp://10.244.18.7
+./ndn-cxx/build/examples/examples/my-consumer
 ```
 
-```consumer
-cd ./work/NDN-original/
-sh reinstall.sh
+```producer
+cd /home/NDN-FC-WorkflowPlus/work/NDN-original
+sh ./sh_k8s/setup.sh
 nfd-start
-sh cons_re.sh
+ifconfig
+nfdc face create udp://10.244.2.69
+nfdc route add prefix / nexthop udp://10.244.2.69
+./ndn-cxx/build/examples/my-producer
 ```
