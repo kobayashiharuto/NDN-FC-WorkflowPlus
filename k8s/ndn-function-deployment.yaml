@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ndn-function
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ndn-function
+  template:
+    metadata:
+      labels:
+        app: ndn-function
+    spec:
+      containers:
+        - name: ndn-function
+          image: harutokobayashi/ndn-fc-workflow-plus:1.0
+          volumeMounts:
+            - mountPath: "/work"
+              name: work-volume
+      volumes:
+        - name: work-volume
+          emptyDir: {}
+      nodeSelector:
+        kubernetes.io/hostname: kube1

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ndn-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ndn-consumer
+  template:
+    metadata:
+      labels:
+        app: ndn-consumer
+    spec:
+      containers:
+        - name: ndn-consumer
+          image: harutokobayashi/ndn-fc-workflow-plus:1.0
+          volumeMounts:
+            - mountPath: "/work"
+              name: work-volume
+      volumes:
+        - name: work-volume
+          emptyDir: {}
+      nodeSelector:
+        kubernetes.io/hostname: kube2
