@@ -15,13 +15,13 @@ spec:
       containers:
         - name: ndn-consumer
           image: harutokobayashi/ndn-fc-workflow-plus:1.0
-          volumeMounts:
-            - mountPath: "/home/kobayashi/NDN-FC-WorkflowPlus/work"
-              name: work-volume
+          # volumeMounts:
+          #   - mountPath: "/home/kobayashi/NDN-FC-WorkflowPlus/work"
+          #     name: work-volume
           tty: true
           stdin: true
-      volumes:
-        - name: work-volume
-          emptyDir: {}
+      # volumes:
+      #   - name: work-volume
+      #     emptyDir: {}
       nodeSelector:
         kubernetes.io/hostname: kube2
