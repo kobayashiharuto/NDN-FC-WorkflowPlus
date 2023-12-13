@@ -24,6 +24,7 @@
 
 #include <boost/asio/io_service.hpp>
 #include <iostream>
+#include <chrono>
 
 #include "my-utils.hpp"
 using ndn::examples::myLog;
@@ -82,6 +83,11 @@ namespace ndn
           size_t size = content.value_size();
           std::string contentStr(reinterpret_cast<const char *>(buffer), size);
           myLog("コンテンツを受け取りました！: " + contentStr);
+
+          auto end = std::chrono::high_resolution_clock::now();
+          // 経過時間を計算（ミリ秒単位）
+          std::chrono::duration<double, std::milli> elapsed = end - start_time;
+          std::cout << "経過時間: " << elapsed.count() << " ms\n";
         }
       }
 
@@ -108,6 +114,7 @@ namespace ndn
         interest.setInterestLifetime(2_s);
 
         myLog("Interest を送信しました。\nURL: " + urlDecodeAndTrim(interest.getName().toUri()));
+        start_time = std::chrono::high_resolution_clock::now();
         m_face.expressInterest(interest,
                                std::bind(&MyConsumer::onData, this, _1, _2),
                                std::bind(&MyConsumer::onNack, this, _1, _2),
@@ -119,6 +126,7 @@ namespace ndn
       boost::asio::io_service m_ioService;
       Face m_face{m_ioService};
       Scheduler m_scheduler{m_ioService};
+      std::chrono::time_point<std::chrono::high_resolution_clock> start_time;
     };
 
   } // namespace examples

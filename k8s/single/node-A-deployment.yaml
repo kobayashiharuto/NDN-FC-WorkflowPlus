@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ndn-a
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ndn-a
+  template:
+    metadata:
+      labels:
+        app: ndn-a
+    spec:
+      containers:
+        - name: ndn-a
+          image: harutokobayashi/ndn-fc-workflow-plus:1.0
+          tty: true
+          stdin: true
+      nodeSelector:
+        kubernetes.io/hostname: kube1

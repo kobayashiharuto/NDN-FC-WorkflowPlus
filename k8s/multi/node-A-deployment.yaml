@@ -1,27 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ndn-producer
+  name: ndn-a
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ndn-producer
+      app: ndn-a
   template:
     metadata:
       labels:
-        app: ndn-producer
+        app: ndn-a
     spec:
       containers:
-        - name: ndn-producer
+        - name: ndn-a
           image: harutokobayashi/ndn-fc-workflow-plus:1.0
-          # volumeMounts:
-          #   - mountPath: "/home/kobayashi/NDN-FC-WorkflowPlus/work"
-          #     name: work-volume
           tty: true
           stdin: true
-      # volumes:
-      #   - name: work-volume
-      #     emptyDir: {}
       nodeSelector:
         kubernetes.io/hostname: kube1
