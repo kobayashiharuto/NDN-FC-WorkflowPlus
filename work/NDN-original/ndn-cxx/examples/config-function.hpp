@@ -27,11 +27,11 @@ namespace ndn
             {
               auto data = std::make_shared<ndn::Data>();
               std::string result;
-              for (auto &dataResult : dataResults)
+              for (auto it = dataResults.begin(); it != dataResults.end(); ++it)
               {
-                result += dataContentToString(dataResult);
-                // 最後以外は-A-でつなぐ
-                if (&dataResult != &dataResults.back())
+                result += dataContentToString(*it);
+                // 最後の要素でなければ、"-A-"を追加
+                if (std::next(it) != dataResults.end())
                 {
                   result += "-A-";
                 }
@@ -46,11 +46,11 @@ namespace ndn
             {
               auto data = std::make_shared<ndn::Data>();
               std::string result;
-              for (auto &dataResult : dataResults)
+              for (auto it = dataResults.begin(); it != dataResults.end(); ++it)
               {
-                result += dataContentToString(dataResult);
-                // 最後以外は-B-でつなぐ
-                if (&dataResult != &dataResults.back())
+                result += dataContentToString(*it);
+                // 最後の要素でなければ、"-B-"を追加
+                if (std::next(it) != dataResults.end())
                 {
                   result += "-B-";
                 }
@@ -65,10 +65,14 @@ namespace ndn
             {
               auto data = std::make_shared<ndn::Data>();
               std::string result;
-              // 最後以外は-C-でつなぐ
-              if (&dataResult != &dataResults.back())
+              for (auto it = dataResults.begin(); it != dataResults.end(); ++it)
               {
-                result += "-C-";
+                result += dataContentToString(*it);
+                // 最後の要素でなければ、"-C-"を追加
+                if (std::next(it) != dataResults.end())
+                {
+                  result += "-C-";
+                }
               }
               data->setContent(result);
               return data;
