@@ -21,31 +21,45 @@ namespace ndn
     using FunctionProviderMap = std::unordered_map<std::string, FunctionProvider>;
 
     inline const FunctionProviderMap functionProviders = {
-        // 合成
         {
-            "/A/concat",
+            "/A/func",
             [](const std::vector<ndn::Data> &dataResults, const std::string &functionName) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
               std::string result;
               for (auto &dataResult : dataResults)
               {
+                result += "-A-";
                 result += dataContentToString(dataResult);
               }
               data->setContent(result);
               return data;
             },
         },
-        // 2倍
         {
-            "/A/double",
+            "/B/func",
             [](const std::vector<ndn::Data> &dataResults, const std::string &functionName) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
               std::string result;
               for (auto &dataResult : dataResults)
               {
+                result += "-B-";
                 result += dataContentToString(dataResult);
+              }
+              data->setContent(result);
+              return data;
+            },
+        },
+        {
+            "/C/func",
+            [](const std::vector<ndn::Data> &dataResults, const std::string &functionName) -> std::shared_ptr<ndn::Data>
+            {
+              auto data = std::make_shared<ndn::Data>();
+              std::string result;
+              for (auto &dataResult : dataResults)
+              {
+                result += "-C-";
                 result += dataContentToString(dataResult);
               }
               data->setContent(result);

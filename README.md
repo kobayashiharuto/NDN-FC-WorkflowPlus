@@ -102,7 +102,7 @@ kubectl apply -f ./k8s
 ### コンテナに入る
 ```
 kubectl get pods
-kubectl exec -it <ポッド名> -- /bin/bash
+kubectl exec -it ポッド名 -- /bin/bash
 ```
 
 ### それぞれにコードを持ってくる
@@ -123,6 +123,16 @@ nfdc route add prefix / nexthop udp://10.244.18.7
 ```
 
 ```producer
+cd /home/NDN-FC-WorkflowPlus/work/NDN-original
+sh ./sh_k8s/setup.sh
+nfd-start
+ifconfig
+nfdc face create udp://10.244.2.69
+nfdc route add prefix / nexthop udp://10.244.2.69
+./ndn-cxx/build/examples/my-producer
+```
+
+```function
 cd /home/NDN-FC-WorkflowPlus/work/NDN-original
 sh ./sh_k8s/setup.sh
 nfd-start
