@@ -112,32 +112,69 @@ cd /home
 git clone https://github.com/kobayashiharuto/NDN-FC-WorkflowPlus.git
 ```
 
-```consumer
+A: 10.244.2.69
+B: 10.244.18.7
+C: 10.244.18.6
+
+```A_producer
 cd /home/NDN-FC-WorkflowPlus/work/NDN-original
 sh ./sh_k8s/setup.sh
 nfd-start
 ifconfig
+
+# Aに貼る
+nfdc face create udp://10.244.2.69
+nfdc route add prefix /A nexthop udp://10.244.2.69
+# Bに貼る
 nfdc face create udp://10.244.18.7
-nfdc route add prefix / nexthop udp://10.244.18.7
-./ndn-cxx/build/examples/examples/my-consumer
+nfdc route add prefix /B nexthop udp://10.244.18.7
+# Cに貼る
+nfdc face create udp://10.244.18.6
+nfdc route add prefix /C nexthop udp://10.244.18.6
+
+./ndn-cxx/build/examples/node_a_producer
 ```
 
-```producer
+```_B
 cd /home/NDN-FC-WorkflowPlus/work/NDN-original
 sh ./sh_k8s/setup.sh
 nfd-start
 ifconfig
+
+# Aに貼る
 nfdc face create udp://10.244.2.69
-nfdc route add prefix / nexthop udp://10.244.2.69
-./ndn-cxx/build/examples/my-producer
+nfdc route add prefix /A nexthop udp://10.244.2.69
+# Bに貼る
+nfdc face create udp://10.244.18.7
+nfdc route add prefix /B nexthop udp://10.244.18.7
+# Cに貼る
+nfdc face create udp://10.244.18.6
+nfdc route add prefix /C nexthop udp://10.244.18.6
+
+./ndn-cxx/build/examples/node_b_producer
 ```
 
-```function
+```_C
 cd /home/NDN-FC-WorkflowPlus/work/NDN-original
 sh ./sh_k8s/setup.sh
 nfd-start
 ifconfig
+
+# Aに貼る
 nfdc face create udp://10.244.2.69
-nfdc route add prefix / nexthop udp://10.244.2.69
-./ndn-cxx/build/examples/my-producer
+nfdc route add prefix /A nexthop udp://10.244.2.69
+# Bに貼る
+nfdc face create udp://10.244.18.7
+nfdc route add prefix /B nexthop udp://10.244.18.7
+# Cに貼る
+nfdc face create udp://10.244.18.6
+nfdc route add prefix /C nexthop udp://10.244.18.6
+
+./ndn-cxx/build/examples/node_c_producer
+```
+
+
+```A_consumer
+cd /home/NDN-FC-WorkflowPlus/work/NDN-original
+./ndn-cxx/build/examples/node_a_consumer
 ```

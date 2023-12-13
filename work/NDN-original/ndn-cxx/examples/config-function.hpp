@@ -29,8 +29,12 @@ namespace ndn
               std::string result;
               for (auto &dataResult : dataResults)
               {
-                result += "-A-";
                 result += dataContentToString(dataResult);
+                // 最後以外は-A-でつなぐ
+                if (&dataResult != &dataResults.back())
+                {
+                  result += "-A-";
+                }
               }
               data->setContent(result);
               return data;
@@ -44,8 +48,12 @@ namespace ndn
               std::string result;
               for (auto &dataResult : dataResults)
               {
-                result += "-B-";
                 result += dataContentToString(dataResult);
+                // 最後以外は-B-でつなぐ
+                if (&dataResult != &dataResults.back())
+                {
+                  result += "-B-";
+                }
               }
               data->setContent(result);
               return data;
@@ -57,10 +65,10 @@ namespace ndn
             {
               auto data = std::make_shared<ndn::Data>();
               std::string result;
-              for (auto &dataResult : dataResults)
+              // 最後以外は-C-でつなぐ
+              if (&dataResult != &dataResults.back())
               {
                 result += "-C-";
-                result += dataContentToString(dataResult);
               }
               data->setContent(result);
               return data;
