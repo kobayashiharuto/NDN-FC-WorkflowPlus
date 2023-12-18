@@ -184,7 +184,7 @@ namespace ndn
 
         Interest interest(interestName);
         interest.setMustBeFresh(true);
-        interest.setInterestLifetime(2_s);
+        interest.setInterestLifetime(100_s);
 
         myLog("Interest を送信しました。\nURL: " + urlDecodeAndTrim(interest.getName().toUri()));
         m_face.expressInterest(

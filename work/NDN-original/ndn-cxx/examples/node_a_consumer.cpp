@@ -139,7 +139,7 @@ namespace ndn
 
         Interest interest(interestName);
         interest.setMustBeFresh(true);
-        interest.setInterestLifetime(2_s);
+        interest.setInterestLifetime(100_s);
 
         myLog("Interest を送信しました。\nURL: " + urlDecodeAndTrim(interest.getName().toUri()));
         start_time = std::chrono::high_resolution_clock::now();
