@@ -1,8 +1,9 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: ndn-a
 spec:
+  serviceName: "ndn-a-service"
   replicas: 1
   selector:
     matchLabels:

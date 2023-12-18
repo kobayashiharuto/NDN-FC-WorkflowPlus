@@ -19,4 +19,4 @@ spec:
           tty: true
           stdin: true
       nodeSelector:
-        kubernetes.io/hostname: kube1
+        kubernetes.io/hostname: kube2
