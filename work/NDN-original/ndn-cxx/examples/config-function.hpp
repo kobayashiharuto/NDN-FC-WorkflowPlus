@@ -37,11 +37,10 @@ namespace ndn
               }
 
               // 時間がかかる処理をシミュレート
-              // auto repeatCount = 100000;
-              // auto hashedData = hashString(result, repeatCount);
+              auto repeatCount = 10;
+              auto hashedData = hashString(result, repeatCount);
 
-              // data->setContent(hashedData);
-              data->setContent(result);
+              data->setContent(hashedData);
               return data;
             },
         },
@@ -57,11 +56,10 @@ namespace ndn
               }
 
               // 時間がかかる処理をシミュレート
-              // auto repeatCount = 100000;
-              // auto hashedData = hashString(result, repeatCount);
+              auto repeatCount = 10;
+              auto hashedData = hashString(result, repeatCount);
 
-              // data->setContent(hashedData);
-              data->setContent(result);
+              data->setContent(hashedData);
               return data;
             },
         },
@@ -77,11 +75,10 @@ namespace ndn
               }
 
               // 時間がかかる処理をシミュレート
-              // auto repeatCount = 100000;
-              // auto hashedData = hashString(result, repeatCount);
+              auto repeatCount = 10;
+              auto hashedData = hashString(result, repeatCount);
 
-              // data->setContent(hashedData);
-              data->setContent(result);
+              data->setContent(hashedData);
               return data;
             },
         },
