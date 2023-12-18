@@ -37,7 +37,7 @@ namespace ndn
               }
 
               // 時間がかかる処理をシミュレート
-              auto repeatCount = 3000000;
+              auto repeatCount = 10000000;
               auto hashedData = hashString(result, repeatCount);
 
               data->setContent(hashedData);
@@ -56,7 +56,7 @@ namespace ndn
               }
 
               // 時間がかかる処理をシミュレート
-              auto repeatCount = 3000000;
+              auto repeatCount = 10000000;
               auto hashedData = hashString(result, repeatCount);
 
               data->setContent(hashedData);
@@ -75,7 +75,7 @@ namespace ndn
               }
 
               // 時間がかかる処理をシミュレート
-              auto repeatCount = 3000000;
+              auto repeatCount = 10000000;
               auto hashedData = hashString(result, repeatCount);
 
               data->setContent(hashedData);

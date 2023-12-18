@@ -43,47 +43,57 @@ namespace ndn
       void
       run()
       {
-        std::cout << "/B/data: " << std::endl;
-        for (size_t i = 1; i < 11; i++)
-        {
-          m_scheduler.schedule(time::seconds{i}, [this]
-                               { sendInterest("/B/data"); });
-        }
 
-        std::cout << "/C/data: " << std::endl;
-        for (size_t i = 11; i < 21; i++)
-        {
-          m_scheduler.schedule(time::seconds{i}, [this]
-                               { sendInterest("/C/data"); });
-        }
+        m_scheduler.schedule(time::seconds{1}, [this]
+                             { sendInterest("/A/func/( /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
+        m_scheduler.schedule(time::seconds{5}, [this]
+                             { sendInterest("/A/func/( /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
+        m_scheduler.schedule(time::seconds{10}, [this]
+                             { sendInterest("/A/func/( /A/func/(/B/data, /C/data), /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
+        m_scheduler.schedule(time::seconds{20}, [this]
+                             { sendInterest("/A/func/( /A/func/(/B/data, /C/data), /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
 
-        std::cout << "/B/func/(/B/data, /C/data): " << std::endl;
-        for (size_t i = 21; i < 31; i++)
-        {
-          m_scheduler.schedule(time::seconds{i}, [this]
-                               { sendInterest("/B/func/(/B/data, /C/data)"); });
-        }
+        // std::cout << "/B/data: " << std::endl;
+        // for (size_t i = 1; i < 11; i++)
+        // {
+        //   m_scheduler.schedule(time::seconds{i}, [this]
+        //                        { sendInterest("/B/data"); });
+        // }
 
-        std::cout << "/A/func/( /B/func/(/B/data, /C/data) ): " << std::endl;
-        for (size_t i = 31; i < 51; i += 2)
-        {
-          m_scheduler.schedule(time::seconds{i}, [this]
-                               { sendInterest("/A/func/( /B/func/(/B/data, /C/data) )"); });
-        }
+        // std::cout << "/C/data: " << std::endl;
+        // for (size_t i = 11; i < 21; i++)
+        // {
+        //   m_scheduler.schedule(time::seconds{i}, [this]
+        //                        { sendInterest("/C/data"); });
+        // }
 
-        std::cout << "/A/func/( /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) ): " << std::endl;
-        for (size_t i = 51; i < 71; i += 2)
-        {
-          m_scheduler.schedule(time::seconds{i}, [this]
-                               { sendInterest("/A/func/( /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
-        }
+        // std::cout << "/B/func/(/B/data, /C/data): " << std::endl;
+        // for (size_t i = 21; i < 31; i++)
+        // {
+        //   m_scheduler.schedule(time::seconds{i}, [this]
+        //                        { sendInterest("/B/func/(/B/data, /C/data)"); });
+        // }
 
-        std::cout << "/A/func/( /A/func/(/B/data, /C/data), /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) ): " << std::endl;
-        for (size_t i = 71; i < 91; i += 2)
-        {
-          m_scheduler.schedule(time::seconds{i}, [this]
-                               { sendInterest("/A/func/( /A/func/(/B/data, /C/data), /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
-        }
+        // std::cout << "/A/func/( /B/func/(/B/data, /C/data) ): " << std::endl;
+        // for (size_t i = 31; i < 51; i += 2)
+        // {
+        //   m_scheduler.schedule(time::seconds{i}, [this]
+        //                        { sendInterest("/A/func/( /B/func/(/B/data, /C/data) )"); });
+        // }
+
+        // std::cout << "/A/func/( /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) ): " << std::endl;
+        // for (size_t i = 51; i < 71; i += 2)
+        // {
+        //   m_scheduler.schedule(time::seconds{i}, [this]
+        //                        { sendInterest("/A/func/( /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
+        // }
+
+        // std::cout << "/A/func/( /A/func/(/B/data, /C/data), /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) ): " << std::endl;
+        // for (size_t i = 71; i < 91; i += 2)
+        // {
+        //   m_scheduler.schedule(time::seconds{i}, [this]
+        //                        { sendInterest("/A/func/( /A/func/(/B/data, /C/data), /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
+        // }
 
         m_ioService.run();
       }
