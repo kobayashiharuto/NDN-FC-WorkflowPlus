@@ -121,24 +121,24 @@ C: 10.244.18.6
 cd /home/NDN-FC-WorkflowPlus/work/NDN-original/sh_k8s/
 sh rebuild.sh
 nfd-start
-sh node_a.sh
+sh node_a_start.sh
 ```
 
 ```_B
 cd /home/NDN-FC-WorkflowPlus/work/NDN-original/sh_k8s/
 sh rebuild.sh
 nfd-start
-sh node_b.sh
+sh node_b_start.sh
 ```
 
 ```_C
 cd /home/NDN-FC-WorkflowPlus/work/NDN-original/sh_k8s/
 sh rebuild.sh
 nfd-start
-sh node_c.sh
+sh node_c_start.sh
 ```
 
 
 ```A_consumer
-cd /home/NDN-FC-WorkflowPlus/work/NDN-original/ndn-cxx/build/examples/node_a_consumer
+/home/NDN-FC-WorkflowPlus/work/NDN-original/ndn-cxx/build/examples/node_a_consumer
 ```
