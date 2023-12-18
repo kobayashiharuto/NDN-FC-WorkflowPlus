@@ -45,7 +45,7 @@ namespace ndn
       {
 
         m_scheduler.schedule(time::seconds{1}, [this]
-                             { sendInterest("/A/func/( /B/func/(/B/data, /C/data) )"); });
+                             { sendInterest("/A/func/(/B/data, /C/data)"); });
         m_scheduler.schedule(time::seconds{5}, [this]
                              { sendInterest("/A/func/( /B/func/(/B/data, /C/data) )"); });
         m_scheduler.schedule(time::seconds{10}, [this]
