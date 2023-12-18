@@ -45,34 +45,24 @@ namespace ndn
       {
         sendInterest("/B/data");
 
-        m_scheduler.schedule(1_s, [this]
-                             { sendInterest("/C/data"); });
-
-        m_scheduler.schedule(2_s, [this]
-                             { sendInterest("/B/func/(/B/data, /C/data)"); });
-
-        m_scheduler.schedule(3_s, [this]
-                             { sendInterest("/A/func/( /B/func/(/B/data, /C/data) )"); });
-
-        m_scheduler.schedule(5_s, [this]
-                             { sendInterest("/A/func/( /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
-
-        m_scheduler.schedule(7_s, [this]
-                             { sendInterest("/A/func/( /A/func/(/B/data, /C/data), /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
-
-        // sendInterest("/A/data/dog");
-
-        // m_scheduler.schedule(1_s, [this]
-        //                      { sendInterest("/A/data/cat"); });
+        for (size_t i = 1; i < 11; i++)
+        {
+          std::cout << "/C/data: " << i << std::endl;
+          m_scheduler.schedule(time::seconds{i}, [this]
+                               { sendInterest("/C/data"); });
+        }
 
         // m_scheduler.schedule(2_s, [this]
-        //                      { sendInterest("/A/concat/(/A/data/cat, /A/data/dog)"); });
+        //                      { sendInterest("/B/func/(/B/data, /C/data)"); });
 
         // m_scheduler.schedule(3_s, [this]
-        //                      { sendInterest("/A/double/(/A/double/(/A/double/(/A/data/cat)))"); });
+        //                      { sendInterest("/A/func/( /B/func/(/B/data, /C/data) )"); });
 
-        // m_scheduler.schedule(4_s, [this]
-        //                      { sendInterest("/A/concat/(/A/double/(/A/data/cat), /A/concat/(/A/data/dog, /A/data/dog), /A/data/cat, /A/data/cat)"); });
+        // m_scheduler.schedule(5_s, [this]
+        //                      { sendInterest("/A/func/( /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
+
+        // m_scheduler.schedule(7_s, [this]
+        //                      { sendInterest("/A/func/( /A/func/(/B/data, /C/data), /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
         m_ioService.run();
       }
 
