@@ -52,7 +52,7 @@ namespace ndn
                              { sendInterest("/B/func/(/B/data, /C/data)"); });
 
         m_scheduler.schedule(3_s, [this]
-                             { sendInterest("/A/func/( /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
+                             { sendInterest("/A/func/( /B/func/(/B/data, /C/data) )"); });
 
         m_scheduler.schedule(5_s, [this]
                              { sendInterest("/A/func/( /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
