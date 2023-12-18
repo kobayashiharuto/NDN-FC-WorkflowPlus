@@ -9,4 +9,4 @@ cd /home/NDN-FC-WorkflowPlus/work/NDN-original/NFD
 ./waf configure
 ./waf
 ./waf install
-sudo cp /usr/local/etc/ndn/nfd.conf.sample /usr/local/etc/ndn/nfd.conf
+sudo cp /home/NDN-FC-WorkflowPlus/work/nfd.conf /usr/local/etc/ndn/nfd.conf
