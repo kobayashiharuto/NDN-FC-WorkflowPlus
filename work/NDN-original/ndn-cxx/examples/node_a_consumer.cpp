@@ -54,6 +54,12 @@ namespace ndn
         m_scheduler.schedule(3_s, [this]
                              { sendInterest("/A/func/( /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
 
+        m_scheduler.schedule(5_s, [this]
+                             { sendInterest("/A/func/( /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
+
+        m_scheduler.schedule(7_s, [this]
+                             { sendInterest("/A/func/( /A/func/(/B/data, /C/data), /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
+
         // sendInterest("/A/data/dog");
 
         // m_scheduler.schedule(1_s, [this]
