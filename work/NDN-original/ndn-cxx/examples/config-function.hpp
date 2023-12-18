@@ -11,8 +11,10 @@
 #include <ndn-cxx/face.hpp>
 
 #include "my-utils.hpp"
+#include "benchmark.hpp"
 
 using ndn::examples::dataContentToString;
+using ndn::examples::hashString;
 using ndn::examples::myLog;
 
 namespace ndn
@@ -29,16 +31,16 @@ namespace ndn
             {
               auto data = std::make_shared<ndn::Data>();
               std::string result;
-              for (auto it = dataResults.begin(); it != dataResults.end(); ++it)
+              for (auto &dataResult : dataResults)
               {
-                result += dataContentToString(*it);
-                // 最後の要素でなければ、"-A-"を追加
-                if (std::next(it) != dataResults.end())
-                {
-                  result += "-A-";
-                }
+                result += dataContentToString(dataResult);
               }
-              data->setContent(result);
+
+              // 時間がかかる処理をシミュレート
+              auto repeatCount = 100000;
+              auto hashedData = hashString(result, repeatCount);
+
+              data->setContent(hashedData);
               return data;
             },
         },
@@ -48,17 +50,16 @@ namespace ndn
             {
               auto data = std::make_shared<ndn::Data>();
               std::string result;
-              for (auto it = dataResults.begin(); it != dataResults.end(); ++it)
+              for (auto &dataResult : dataResults)
               {
-                result += dataContentToString(*it);
-                // 最後の要素でなければ、"-B-"を追加
-                if (std::next(it) != dataResults.end())
-                {
-                  result += "-B-";
-                }
+                result += dataContentToString(dataResult);
               }
-              std::this_thread::sleep_for(std::chrono::milliseconds(100));
-              data->setContent(result);
+
+              // 時間がかかる処理をシミュレート
+              auto repeatCount = 100000;
+              auto hashedData = hashString(result, repeatCount);
+
+              data->setContent(hashedData);
               return data;
             },
         },
@@ -68,16 +69,16 @@ namespace ndn
             {
               auto data = std::make_shared<ndn::Data>();
               std::string result;
-              for (auto it = dataResults.begin(); it != dataResults.end(); ++it)
+              for (auto &dataResult : dataResults)
               {
-                result += dataContentToString(*it);
-                // 最後の要素でなければ、"-C-"を追加
-                if (std::next(it) != dataResults.end())
-                {
-                  result += "-C-";
-                }
+                result += dataContentToString(dataResult);
               }
-              data->setContent(result);
+
+              // 時間がかかる処理をシミュレート
+              auto repeatCount = 100000;
+              auto hashedData = hashString(result, repeatCount);
+
+              data->setContent(hashedData);
               return data;
             },
         },
