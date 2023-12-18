@@ -130,6 +130,7 @@ nfdc face create udp://10.244.18.6
 nfdc route add prefix /C nexthop udp://10.244.18.6
 
 ./ndn-cxx/build/examples/node_a_producer
+
 ```
 
 ```_B
@@ -146,6 +147,7 @@ nfdc face create udp://10.244.18.6
 nfdc route add prefix /C nexthop udp://10.244.18.6
 
 ./ndn-cxx/build/examples/node_b_producer
+
 ```
 
 ```_C
@@ -162,6 +164,7 @@ nfdc face create udp://10.244.18.7
 nfdc route add prefix /B nexthop udp://10.244.18.7
 
 ./ndn-cxx/build/examples/node_c_producer
+
 ```
 
 

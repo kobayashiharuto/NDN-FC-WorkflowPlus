@@ -1,8 +1,9 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: ndn-b
 spec:
+  serviceName: "ndn-b-service"
   replicas: 1
   selector:
     matchLabels:
@@ -18,4 +19,4 @@ spec:
           tty: true
           stdin: true
       nodeSelector:
-        kubernetes.io/hostname: kube2
+        kubernetes.io/hostname: kube1
