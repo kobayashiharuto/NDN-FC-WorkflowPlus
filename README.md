@@ -140,6 +140,5 @@ sh node_c.sh
 
 
 ```A_consumer
-cd /home/NDN-FC-WorkflowPlus/work/NDN-original
-./ndn-cxx/build/examples/node_a_consumer
+cd /home/NDN-FC-WorkflowPlus/work/NDN-original/ndn-cxx/build/examples/node_a_consumer
 ```
