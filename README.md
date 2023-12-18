@@ -113,10 +113,6 @@ git clone https://github.com/kobayashiharuto/NDN-FC-WorkflowPlus.git
 export PKG_CONFIG_PATH="/home/NDN-FC-WorkflowPlus/work/NDN-original"
 ```
 
-A: 10.244.2.69
-B: 10.244.18.7
-C: 10.244.18.6
-
 ```A_producer
 cd /home/NDN-FC-WorkflowPlus/work/NDN-original/sh_k8s/
 sh rebuild.sh
