@@ -45,13 +45,18 @@ namespace ndn
       {
 
         m_scheduler.schedule(time::seconds{1}, [this]
-                             { sendInterest("/A/func/( /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
+                             { sendInterest("/A/func/( /B/func/(/B/data, /C/data) )"); });
         m_scheduler.schedule(time::seconds{5}, [this]
-                             { sendInterest("/A/func/( /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
+                             { sendInterest("/A/func/( /B/func/(/B/data, /C/data) )"); });
         m_scheduler.schedule(time::seconds{10}, [this]
+                             { sendInterest("/A/func/( /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
+        m_scheduler.schedule(time::seconds{15}, [this]
                              { sendInterest("/A/func/( /A/func/(/B/data, /C/data), /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
+
         m_scheduler.schedule(time::seconds{20}, [this]
-                             { sendInterest("/A/func/( /A/func/(/B/data, /C/data), /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
+                             { sendInterest("/A/func/( /A/func/(/B/data, /C/data), /B/func/(/B/data,  /A/func/(/B/data, /C/data)), /C/func/(/B/data, /C/data) )"); });
+        m_scheduler.schedule(time::seconds{30}, [this]
+                             { sendInterest("/C/func/( /A/func/(/B/data, /C/data), /B/func/(/B/data), /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
 
         // std::cout << "/B/data: " << std::endl;
         // for (size_t i = 1; i < 11; i++)
