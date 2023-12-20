@@ -44,22 +44,23 @@ namespace ndn
       run()
       {
         m_scheduler.schedule(1_s, [this]
-                             { sendInterest("/C/data"); });
-
+                             { sendInterest("/B/data"); });
         m_scheduler.schedule(2_s, [this]
-                             { sendInterest("/B/func/(/B/data, /C/data)"); });
-
+                             { sendInterest("/C/data"); });
         m_scheduler.schedule(3_s, [this]
-                             { sendInterest("/B/func/(/B/data, /C/data)"); });
-
+                             { sendInterest("/D/data"); });
         m_scheduler.schedule(4_s, [this]
-                             { sendInterest("/A/func/( /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
-
+                             { sendInterest("/E/data"); });
         m_scheduler.schedule(5_s, [this]
-                             { sendInterest("/B/func/( /B/func/(/B/data, /C/data), /C/func/(/B/data, /C/data) )"); });
-
+                             { sendInterest("/F/data"); });
         m_scheduler.schedule(6_s, [this]
-                             { sendInterest("/C/func/(/B/data, /C/data)"); });
+                             { sendInterest("/X/func/( /F/data, /D/data )"); });
+        m_scheduler.schedule(7_s, [this]
+                             { sendInterest("/X/func/( /F/data, /Y/func/( /F/data, /D/data ) )"); });
+        m_scheduler.schedule(8_s, [this]
+                             { sendInterest("/X/func/( /F/data, /Y/func/( /F/data, /Z/func/( /F/data, /Y/func/( /F/data, /D/data ) ) ) )"); });
+        m_scheduler.schedule(15_s, [this]
+                             { sendInterest("/X/func/( /F/data, /Y/func/( /F/data, /Z/func/( /F/data, /Y/func/( /F/data, /D/data ) ) ) )"); });
 
         m_ioService.run();
       }

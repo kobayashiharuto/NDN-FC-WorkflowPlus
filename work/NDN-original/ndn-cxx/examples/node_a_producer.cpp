@@ -51,7 +51,27 @@ namespace ndn
       void
       run()
       {
-        m_face.setInterestFilter("/A",
+        m_face.setInterestFilter("/X",
+                                 std::bind(&MyProducer::onInterest, this, _2),
+                                 nullptr, // RegisterPrefixSuccessCallback is optional
+                                 std::bind(&MyProducer::onRegisterFailed, this, _1, _2));
+        m_face.setInterestFilter("/B",
+                                 std::bind(&MyProducer::onInterest, this, _2),
+                                 nullptr, // RegisterPrefixSuccessCallback is optional
+                                 std::bind(&MyProducer::onRegisterFailed, this, _1, _2));
+        m_face.setInterestFilter("/C",
+                                 std::bind(&MyProducer::onInterest, this, _2),
+                                 nullptr, // RegisterPrefixSuccessCallback is optional
+                                 std::bind(&MyProducer::onRegisterFailed, this, _1, _2));
+        m_face.setInterestFilter("/D",
+                                 std::bind(&MyProducer::onInterest, this, _2),
+                                 nullptr, // RegisterPrefixSuccessCallback is optional
+                                 std::bind(&MyProducer::onRegisterFailed, this, _1, _2));
+        m_face.setInterestFilter("/E",
+                                 std::bind(&MyProducer::onInterest, this, _2),
+                                 nullptr, // RegisterPrefixSuccessCallback is optional
+                                 std::bind(&MyProducer::onRegisterFailed, this, _1, _2));
+        m_face.setInterestFilter("/F",
                                  std::bind(&MyProducer::onInterest, this, _2),
                                  nullptr, // RegisterPrefixSuccessCallback is optional
                                  std::bind(&MyProducer::onRegisterFailed, this, _1, _2));

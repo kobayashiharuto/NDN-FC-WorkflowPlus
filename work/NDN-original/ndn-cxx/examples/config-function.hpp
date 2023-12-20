@@ -24,7 +24,7 @@ namespace ndn
 
     inline const FunctionProviderMap functionProviders = {
         {
-            "/A/func",
+            "/X/func",
             [](const std::vector<ndn::Data> &dataResults, const std::string &functionName) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
@@ -43,7 +43,7 @@ namespace ndn
             },
         },
         {
-            "/B/func",
+            "/Y/func",
             [](const std::vector<ndn::Data> &dataResults, const std::string &functionName) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
@@ -57,13 +57,12 @@ namespace ndn
                   result += "-B-";
                 }
               }
-              std::this_thread::sleep_for(std::chrono::milliseconds(100));
               data->setContent(result);
               return data;
             },
         },
         {
-            "/C/func",
+            "/Z/func",
             [](const std::vector<ndn::Data> &dataResults, const std::string &functionName) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
@@ -77,7 +76,7 @@ namespace ndn
                   result += "-C-";
                 }
               }
-              std::this_thread::sleep_for(std::chrono::milliseconds(200));
+              std::this_thread::sleep_for(std::chrono::milliseconds(1000));
               data->setContent(result);
               return data;
             },

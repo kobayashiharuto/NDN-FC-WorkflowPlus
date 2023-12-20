@@ -51,7 +51,7 @@ namespace ndn
       void
       run()
       {
-        m_face.setInterestFilter("/B",
+        m_face.setInterestFilter("/Y",
                                  std::bind(&MyProducer::onInterest, this, _2),
                                  nullptr, // RegisterPrefixSuccessCallback is optional
                                  std::bind(&MyProducer::onRegisterFailed, this, _1, _2));

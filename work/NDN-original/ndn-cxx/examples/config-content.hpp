@@ -40,7 +40,33 @@ namespace ndn
               return data;
             },
         },
-        // 他のコンテンツ提供関数を追加する
+        {
+            "/D/data",
+            [](const std::string &url) -> std::shared_ptr<ndn::Data>
+            {
+              auto data = std::make_shared<ndn::Data>();
+              data->setContent("!!!D_DATA!!!");
+              return data;
+            },
+        },
+        {
+            "/E/data",
+            [](const std::string &url) -> std::shared_ptr<ndn::Data>
+            {
+              auto data = std::make_shared<ndn::Data>();
+              data->setContent("!!!E_DATA!!!");
+              return data;
+            },
+        },
+        {
+            "/F/data",
+            [](const std::string &url) -> std::shared_ptr<ndn::Data>
+            {
+              auto data = std::make_shared<ndn::Data>();
+              data->setContent("!!!F_DATA!!!");
+              return data;
+            },
+        },
     };
 
   } // namespace examples
