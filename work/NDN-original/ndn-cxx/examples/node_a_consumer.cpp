@@ -44,9 +44,9 @@ namespace ndn
       run()
       {
         m_scheduler.schedule(1_s, [this]
-                             { sendInterest("/Y/func( /X/func/(/B/data, /Z/func/(/C/data) ),  /Z/func/(/C/data))"); });
+                             { sendInterest("/Y/func/( /X/func/(/B/data, /Z/func/(/C/data) ),  /Z/func/(/C/data))"); });
         m_scheduler.schedule(5_s, [this]
-                             { sendInterest("/Y/func( /X/func/(/B/data, /Z/func/(/C/data) ),  /Z/func/(/C/data))"); });
+                             { sendInterest("/Y/func/( /X/func/(/B/data, /Z/func/(/C/data) ),  /Z/func/(/C/data))"); });
 
         m_ioService.run();
       }
