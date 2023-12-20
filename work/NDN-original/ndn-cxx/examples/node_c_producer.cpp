@@ -180,7 +180,7 @@ namespace ndn
       void sendInterest(const std::string &name, const std::function<void(const ndn::Data &)> &callback)
       {
         Name interestName(name);
-        // interestName.appendVersion();
+        interestName.appendVersion();
 
         Interest interest(interestName);
         interest.setMustBeFresh(true);

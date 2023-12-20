@@ -88,7 +88,7 @@ namespace ndn
       void sendInterest(std::string name)
       {
         Name interestName(name);
-        // interestName.appendVersion();
+        interestName.appendVersion();
 
         Interest interest(interestName);
         interest.setMustBeFresh(true);
