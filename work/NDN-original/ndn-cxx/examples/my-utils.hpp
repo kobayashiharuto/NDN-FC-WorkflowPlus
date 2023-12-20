@@ -14,9 +14,7 @@ namespace ndn
     void myLog(const std::string &message)
     {
       return;
-      std::cout << "\n------------------------------------------------------------\n"
-                << message << "\n------------------------------------------------------------\n"
-                << std::endl;
+      std::cout << "MY_LOG: " << message << std::endl;
     }
 
     // URLデコードを行う

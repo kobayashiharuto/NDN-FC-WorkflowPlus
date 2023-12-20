@@ -10,6 +10,9 @@ nfdc route add prefix /D nexthop udp://10.244.18.19
 # Eに貼る
 nfdc face create udp://10.244.18.19
 nfdc route add prefix /E nexthop udp://10.244.18.19
+# Fに貼る
+nfdc face create udp://10.244.18.19
+nfdc route add prefix /F nexthop udp://10.244.18.19
 # Xに貼る
 nfdc face create udp://10.244.18.19
 nfdc route add prefix /X nexthop udp://10.244.18.19
