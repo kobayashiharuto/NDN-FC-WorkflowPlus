@@ -9,8 +9,10 @@
 #include <ndn-cxx/face.hpp>
 
 #include "my-utils.hpp"
+#include "base64.hpp"
 
 using ndn::examples::dataContentToString;
+using ndn::examples::encodeImageToBase64;
 using ndn::examples::myLog;
 
 namespace ndn
@@ -27,7 +29,10 @@ namespace ndn
             [](const std::string &url) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
-              data->setContent("!!!A_DATA!!!");
+
+              std::string imagePath = "/work/experimental_data/mandrill.bmp";
+              std::string encodedImage = encodeImageToBase64(imagePath);
+              data->setContent(encodedImage);
               return data;
             },
         },
