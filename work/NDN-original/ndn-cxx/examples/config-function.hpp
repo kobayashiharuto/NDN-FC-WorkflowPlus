@@ -26,7 +26,7 @@ namespace ndn
 
     inline const FunctionProviderMap functionProviders = {
         {
-            "/X/func",
+            "/A/func",
             [](const std::vector<ndn::Data> &dataResults, const std::string &functionName) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
@@ -40,16 +40,16 @@ namespace ndn
                   result += "-A-";
                 }
               }
-              // auto repeatCount = 10000000;
-              // auto hashedData = hashString(result, repeatCount);
-              std::cout << "1000ms待機" << std::endl;
-              std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+              // 時間がかかる処理をシミュレート
+              auto repeatCount = 10000000;
+              auto hashedData = hashString(result, repeatCount);
               data->setContent(result);
               return data;
             },
         },
         {
-            "/Y/func",
+            "/B/func",
             [](const std::vector<ndn::Data> &dataResults, const std::string &functionName) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
@@ -63,12 +63,16 @@ namespace ndn
                   result += "-B-";
                 }
               }
+
+              // 時間がかかる処理をシミュレート
+              auto repeatCount = 10000000;
+              auto hashedData = hashString(result, repeatCount);
               data->setContent(result);
               return data;
             },
         },
         {
-            "/Z/func",
+            "/C/func",
             [](const std::vector<ndn::Data> &dataResults, const std::string &functionName) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
@@ -82,6 +86,10 @@ namespace ndn
                   result += "-C-";
                 }
               }
+
+              // 時間がかかる処理をシミュレート
+              auto repeatCount = 10000000;
+              auto hashedData = hashString(result, repeatCount);
               data->setContent(result);
               return data;
             },

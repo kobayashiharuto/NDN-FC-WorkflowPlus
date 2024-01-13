@@ -37,7 +37,7 @@ namespace ndn
     // ログを表示
     void myLog(const std::string &message)
     {
-      // return;
+      return;
       std::cout << "MY_LOG[" << getCurrentTimeWithMilliseconds() << "]: " << message << std::endl;
     }
 
