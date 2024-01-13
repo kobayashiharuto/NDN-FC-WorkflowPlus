@@ -1,0 +1,39 @@
+I: /Y/func/%28%20/X/func/%28/B/data%2C%20/Z/func/%28/C/data%29%20%29%2C%20%20/Z/func/%28/C/data%29%29/v=1705120869551?MustBeFresh&Nonce=9b6ad15d&Lifetime=100000
+MY_LOG[04:41:09.575]: Interest を受信しました。
+URL: /Y/func/%28%20/X/func/%28/B/data%2C%20/Z/func/%28/C/data%29%20%29%2C%20%20/Z/func/%28/C/data%29%29/v=1705120869551
+
+
+MY_LOG[04:41:09.575]: function リクエストとして処理をします。
+URL: /Y/func/( /X/func/(/B/data, /Z/func/(/C/data) ),  /Z/func/(/C/data))
+関数名: /Y/func
+
+
+URL: /X/func/(/B/data, /Z/func/(/C/data) )
+MY_LOG[04:41:09.576]: データを取得します。
+MY_LOG[04:41:09.576]: Interest を送信しました。
+
+
+URL: /Z/func/(/C/data)
+MY_LOG[04:41:09.576]: データを取得します。
+MY_LOG[04:41:09.576]: Interest を送信しました。
+
+
+URL: /Z/func/(/C/data)
+MY_LOG[04:41:10.600]: コンテンツを受け取りました！
+MY_LOG[04:41:10.600]: データ取得完了: !!!C_DATA!!!
+
+MY_LOG[04:41:10.600]: カウンタ: 1
+MY_LOG[04:41:10.600]: トータル: 2
+
+
+URL: /X/func/(/B/data, /Z/func/(/C/data) )
+MY_LOG[04:41:11.602]: コンテンツを受け取りました！
+MY_LOG[04:41:11.602]: データ取得完了: !!!B_DATA!!!-A-!!!C_DATA!!!
+
+MY_LOG[04:41:11.602]: カウンタ: 2
+MY_LOG[04:41:11.602]: トータル: 2
+
+
+MY_LOG[04:41:11.602]: 全てのデータが揃いました。
+MY_LOG[04:41:11.602]: function処理を実行します。 function: /Y/func
+MY_LOG[04:41:11.602]: 関数の実行結果を受け取りました。
