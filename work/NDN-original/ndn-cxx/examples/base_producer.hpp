@@ -55,7 +55,7 @@ namespace ndn
       virtual void run() = 0;
 
     public:
-      bool disableCache = false;
+      bool disableCache = true;
       Face m_face;
       KeyChain m_keyChain;
       std::vector<std::future<void>> futures;
