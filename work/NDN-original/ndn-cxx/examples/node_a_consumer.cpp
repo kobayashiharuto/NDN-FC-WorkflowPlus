@@ -46,10 +46,10 @@ namespace ndn
       void
       run()
       {
-        m_scheduler.schedule(1_s, [this]
-                             { sendInterest("/Y/func/( /X/func/(/B/data, /Z/func/(/C/data) ),  /Z/func/(/C/data))"); });
-        m_scheduler.schedule(5_s, [this]
-                             { sendInterest("/Y/func/( /X/func/(/B/data, /Z/func/(/C/data) ),  /Z/func/(/C/data))"); });
+        m_scheduler.schedule(0_s, [this]
+                             { sendInterest("/Y/func/( /B/data,  /X/func/(/C/data))"); });
+        m_scheduler.schedule(2_s, [this]
+                             { sendInterest("/Z/func/( /D/data,  /X/func/(/C/data))"); });
 
         m_ioService.run();
       }
