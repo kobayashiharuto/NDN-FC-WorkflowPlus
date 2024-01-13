@@ -11,8 +11,10 @@
 #include <ndn-cxx/face.hpp>
 
 #include "my-utils.hpp"
+#include "benchmark.hpp"
 
 using ndn::examples::dataContentToString;
+using ndn::examples::hashString;
 using ndn::examples::myLog;
 
 namespace ndn
@@ -38,6 +40,10 @@ namespace ndn
                   result += "-A-";
                 }
               }
+              // auto repeatCount = 10000000;
+              // auto hashedData = hashString(result, repeatCount);
+              std::cout << "1000ms待機" << std::endl;
+              std::this_thread::sleep_for(std::chrono::milliseconds(1000));
               data->setContent(result);
               return data;
             },
@@ -76,7 +82,6 @@ namespace ndn
                   result += "-C-";
                 }
               }
-              std::this_thread::sleep_for(std::chrono::milliseconds(1000));
               data->setContent(result);
               return data;
             },

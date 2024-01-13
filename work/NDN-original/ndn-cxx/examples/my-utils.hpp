@@ -10,11 +10,35 @@ namespace ndn
 {
   namespace examples
   {
+
+    // 現在時刻を文字列で取得
+    std::string getCurrentTimeWithMilliseconds()
+    {
+      // 現在の時刻を取得
+      auto now = std::chrono::system_clock::now();
+
+      // 時刻を秒単位で切り捨てて、time_t型に変換
+      auto now_c = std::chrono::system_clock::to_time_t(now);
+
+      // ミリ秒部分を計算
+      auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+
+      // tm構造体に変換
+      std::tm now_tm = *std::localtime(&now_c);
+
+      // stringstreamを使用してフォーマット
+      std::stringstream ss;
+      ss << std::put_time(&now_tm, "%H:%M:%S");
+      ss << '.' << std::setfill('0') << std::setw(3) << milliseconds.count();
+
+      return ss.str();
+    }
+
     // ログを表示
     void myLog(const std::string &message)
     {
       // return;
-      std::cout << "MY_LOG: " << message << std::endl;
+      std::cout << "MY_LOG[" << getCurrentTimeWithMilliseconds() << "]: " << message << std::endl;
     }
 
     // URLデコードを行う

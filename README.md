@@ -1,96 +1,44 @@
-## 立ち上げ
+## local
 
-```bash
+### コンテナ構築
+
+```
 docker compose up
 ```
 
-## 入る
-
-```bash
-docker compose run ndn bash
+### コンテナに入る
 ```
-
-## 初期設定手順
-
-### インストール
-
-`sh /work/NDN-original/setup.sh` で OK
-
-```
-cd /work/ndn-cxx
-./waf configure --with-examples
-./waf
-./waf install
-sudo ldconfig
-cd /work/NFD
-./waf configure
-./waf
-./waf install
-sudo cp /work/nfd.conf /usr/local/etc/ndn/nfd.conf
-```
-
-## 共有ライブラリがあるかどうかの確認
-
-```
-ldd /work/ndn-cxx/build/examples/producer
+docker compose run ndn-node-a bash
+docker compose run ndn-node-b bash
+docker compose run ndn-node-c bash
 ```
 
 ### 実行
 
-```
-# nfd起動
+```node-a
+sh /work/NDN-original/sh_local/setup.sh
 nfd-start
-
-cd /work/NDN-FC-plus/ndn-cxx-FC
-or
-cd work/NDN-original/ndn-cxx
-
-# trivial producer app
-./build/examples/producer
-
-# trivial consumer app
-./build/examples/consumer
-
-# trivial consumer app with timers
-./build/examples/consumer-with-timer
+sh /work/NDN-original/sh_local/node_a_start.sh
 ```
 
-## エラー
-
-```
-ERROR: Failed to read configuration file: trust-schema.conf
-```
-
-## コンフィグ変更時
-
-```
-cp /work/nfd.conf /usr/local/etc/ndn/nfd.conf
-```
-
-## リビルド
-
-```
-sh setup.sh
+```node-b
+sh /work/NDN-original/sh_local/reinstall.sh
 nfd-start
-sh prod_re.sh 
-sh cons_re.sh
+sh /work/NDN-original/sh_local/node_b_start.sh
 ```
 
-## 実行
-
-```provider
-cd /work/NDN-original/
-sh setup.sh
+```node-c
+sh /work/NDN-original/sh_local/reinstall.sh
 nfd-start
-sh prod_re.sh
+sh /work/NDN-original/sh_local/node_c_start.sh
 ```
 
-```consumer
-cd /work/NDN-original/
-sh reinstall.sh
+```node-a(consumer)
+sh /work/NDN-original/sh_local/reinstall.sh
 nfd-start
-sh cons_re.sh
+sh /work/NDN-original/sh_local/node_a_consumer_start.sh
 ```
+
 
 ## k8s
 

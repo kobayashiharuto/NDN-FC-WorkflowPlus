@@ -1,6 +1,7 @@
 FROM ubuntu:20.04
 
-ENV PKG_CONFIG_PATH="/work/NDN-FC-plus/ndn-cxx-FC"
+ENV PKG_CONFIG_PATH="/work/NDN-original/ndn-cxx"
+# ENV PKG_CONFIG_PATH="/work/NDN-FC-plus/ndn-cxx-FC"
 # ENV PKG_CONFIG_PATH="/work/ndn-cxx"
 ENV LD_LIBRARY_PATH="/usr/local/lib"
 
