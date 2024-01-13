@@ -11,7 +11,7 @@ namespace ndn
     public:
       void run() override
       {
-        m_face.setInterestFilter("/Y",
+        m_face.setInterestFilter("/B",
                                  std::bind(&MyProducer::onInterest, this, _2),
                                  nullptr, // RegisterPrefixSuccessCallback is optional
                                  std::bind(&MyProducer::onRegisterFailed, this, _1, _2));

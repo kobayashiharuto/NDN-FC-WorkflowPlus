@@ -11,30 +11,10 @@ namespace ndn
     public:
       void run() override
       {
-        m_face.setInterestFilter("/X",
-                                 std::bind(&BaseProducer::onInterest, this, _2),
+        m_face.setInterestFilter("/A",
+                                 std::bind(&MyProducer::onInterest, this, _2),
                                  nullptr, // RegisterPrefixSuccessCallback is optional
-                                 std::bind(&BaseProducer::onRegisterFailed, this, _1, _2));
-        m_face.setInterestFilter("/B",
-                                 std::bind(&BaseProducer::onInterest, this, _2),
-                                 nullptr, // RegisterPrefixSuccessCallback is optional
-                                 std::bind(&BaseProducer::onRegisterFailed, this, _1, _2));
-        m_face.setInterestFilter("/C",
-                                 std::bind(&BaseProducer::onInterest, this, _2),
-                                 nullptr, // RegisterPrefixSuccessCallback is optional
-                                 std::bind(&BaseProducer::onRegisterFailed, this, _1, _2));
-        m_face.setInterestFilter("/D",
-                                 std::bind(&BaseProducer::onInterest, this, _2),
-                                 nullptr, // RegisterPrefixSuccessCallback is optional
-                                 std::bind(&BaseProducer::onRegisterFailed, this, _1, _2));
-        m_face.setInterestFilter("/E",
-                                 std::bind(&BaseProducer::onInterest, this, _2),
-                                 nullptr, // RegisterPrefixSuccessCallback is optional
-                                 std::bind(&BaseProducer::onRegisterFailed, this, _1, _2));
-        m_face.setInterestFilter("/F",
-                                 std::bind(&BaseProducer::onInterest, this, _2),
-                                 nullptr, // RegisterPrefixSuccessCallback is optional
-                                 std::bind(&BaseProducer::onRegisterFailed, this, _1, _2));
+                                 std::bind(&MyProducer::onRegisterFailed, this, _1, _2));
 
         auto cert = m_keyChain.getPib().getDefaultIdentity().getDefaultKey().getDefaultCertificate();
         m_certServeHandle = m_face.setInterestFilter(
