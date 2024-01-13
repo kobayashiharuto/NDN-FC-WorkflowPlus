@@ -55,6 +55,7 @@ namespace ndn
       virtual void run() = 0;
 
     public:
+      bool disableCache = true;
       Face m_face;
       KeyChain m_keyChain;
       std::vector<std::future<void>> futures;
@@ -186,10 +187,23 @@ namespace ndn
       void sendInterest(const std::string &name, const std::function<void(const ndn::Data &)> &callback)
       {
         Name interestName(name);
-        interestName.appendVersion();
+
+        if (disableCache)
+        {
+          interestName.appendVersion();
+        }
 
         Interest interest(interestName);
-        interest.setMustBeFresh(true);
+
+        if (disableCache)
+        {
+          interest.setMustBeFresh(true);
+        }
+        else
+        {
+          interest.setMustBeFresh(false);
+        }
+
         interest.setInterestLifetime(100_s);
 
         myLog("Interest を送信しました。\nURL: " + urlDecodeAndTrim(interest.getName().toUri()));
