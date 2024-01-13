@@ -25,6 +25,9 @@
 #include <boost/asio/io_service.hpp>
 #include <iostream>
 #include <chrono>
+#include <map>
+#include <thread>
+#include <future>
 
 #include "my-utils.hpp"
 using ndn::examples::myLog;
@@ -52,8 +55,17 @@ namespace ndn
       }
 
     private:
+      void excuteAsync(std::function<void()> callback = [] {})
+      {
+        futures.push_back(std::async(std::launch::async, [callback]
+                                     {
+                                       callback(); // コールバック実行
+                                     }));
+      }
+
+    private:
       void
-      onData(const Interest &, const Data &data) const
+      onData(const Interest &interest, const Data &data) const
       {
         // std::cout << "Received Data " << data << std::endl;
 
@@ -64,11 +76,20 @@ namespace ndn
           size_t size = content.value_size();
           std::string contentStr(reinterpret_cast<const char *>(buffer), size);
           myLog("コンテンツを受け取りました！: " + contentStr);
+          myLog("URL: " + interest.getName().toUri());
 
-          auto end = std::chrono::high_resolution_clock::now();
-          // 経過時間を計算（ミリ秒単位）
-          std::chrono::duration<double, std::milli> elapsed = end - start_time;
-          std::cout << "経過時間: " << elapsed.count() << " ms\n";
+          // Interest 名に対応する開始時刻をマップから取得
+          auto it = start_times.find(interest.getName().toUri());
+          if (it != start_times.end())
+          {
+            auto start_time = it->second;
+            auto end = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double, std::milli> elapsed = end - start_time;
+            std::cout << "経過時間: " << elapsed.count() << " ms\n";
+
+            // 使用した時刻をマップから削除
+            start_times.erase(it);
+          }
         }
       }
 
@@ -95,7 +116,10 @@ namespace ndn
         interest.setInterestLifetime(100_s);
 
         myLog("Interest を送信しました。\nURL: " + urlDecodeAndTrim(interest.getName().toUri()));
-        start_time = std::chrono::high_resolution_clock::now();
+
+        // この Interest の開始時刻をマップに記録
+        start_times[interest.getName().toUri()] = std::chrono::high_resolution_clock::now();
+
         m_face.expressInterest(interest,
                                std::bind(&MyConsumer::onData, this, _1, _2),
                                std::bind(&MyConsumer::onNack, this, _1, _2),
@@ -107,7 +131,8 @@ namespace ndn
       boost::asio::io_service m_ioService;
       Face m_face{m_ioService};
       Scheduler m_scheduler{m_ioService};
-      std::chrono::time_point<std::chrono::high_resolution_clock> start_time;
+      std::vector<std::future<void>> futures;
+      mutable std::map<std::string, std::chrono::time_point<std::chrono::high_resolution_clock>> start_times;
     };
 
   } // namespace examples
