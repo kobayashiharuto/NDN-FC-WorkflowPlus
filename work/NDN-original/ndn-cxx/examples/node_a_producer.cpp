@@ -35,6 +35,14 @@ namespace ndn
                                  std::bind(&BaseProducer::onInterest, this, _2),
                                  nullptr, // RegisterPrefixSuccessCallback is optional
                                  std::bind(&BaseProducer::onRegisterFailed, this, _1, _2));
+        m_face.setInterestFilter("/G",
+                                 std::bind(&BaseProducer::onInterest, this, _2),
+                                 nullptr, // RegisterPrefixSuccessCallback is optional
+                                 std::bind(&BaseProducer::onRegisterFailed, this, _1, _2));
+        m_face.setInterestFilter("/H",
+                                 std::bind(&BaseProducer::onInterest, this, _2),
+                                 nullptr, // RegisterPrefixSuccessCallback is optional
+                                 std::bind(&BaseProducer::onRegisterFailed, this, _1, _2));
 
         auto cert = m_keyChain.getPib().getDefaultIdentity().getDefaultKey().getDefaultCertificate();
         m_certServeHandle = m_face.setInterestFilter(

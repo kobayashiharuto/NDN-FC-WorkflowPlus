@@ -34,16 +34,11 @@ namespace ndn
               for (auto it = dataResults.begin(); it != dataResults.end(); ++it)
               {
                 result += dataContentToString(*it);
-                // 最後の要素でなければ、"-A-"を追加
                 if (std::next(it) != dataResults.end())
                 {
-                  result += "-A-";
+                  result += "-X-";
                 }
               }
-              // auto repeatCount = 10000000;
-              // auto hashedData = hashString(result, repeatCount);
-              std::cout << "1000ms待機" << std::endl;
-              std::this_thread::sleep_for(std::chrono::milliseconds(1000));
               data->setContent(result);
               return data;
             },
@@ -57,10 +52,9 @@ namespace ndn
               for (auto it = dataResults.begin(); it != dataResults.end(); ++it)
               {
                 result += dataContentToString(*it);
-                // 最後の要素でなければ、"-B-"を追加
                 if (std::next(it) != dataResults.end())
                 {
-                  result += "-B-";
+                  result += "-Y-";
                 }
               }
               data->setContent(result);
@@ -76,10 +70,27 @@ namespace ndn
               for (auto it = dataResults.begin(); it != dataResults.end(); ++it)
               {
                 result += dataContentToString(*it);
-                // 最後の要素でなければ、"-C-"を追加
                 if (std::next(it) != dataResults.end())
                 {
-                  result += "-C-";
+                  result += "-Z-";
+                }
+              }
+              data->setContent(result);
+              return data;
+            },
+        },
+        {
+            "/W/func",
+            [](const std::vector<ndn::Data> &dataResults, const std::string &functionName) -> std::shared_ptr<ndn::Data>
+            {
+              auto data = std::make_shared<ndn::Data>();
+              std::string result;
+              for (auto it = dataResults.begin(); it != dataResults.end(); ++it)
+              {
+                result += dataContentToString(*it);
+                if (std::next(it) != dataResults.end())
+                {
+                  result += "-W-";
                 }
               }
               data->setContent(result);

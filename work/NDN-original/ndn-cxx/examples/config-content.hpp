@@ -67,6 +67,24 @@ namespace ndn
               return data;
             },
         },
+        {
+            "/G/data",
+            [](const std::string &url) -> std::shared_ptr<ndn::Data>
+            {
+              auto data = std::make_shared<ndn::Data>();
+              data->setContent("!!!G_DATA!!!");
+              return data;
+            },
+        },
+        {
+            "/H/data",
+            [](const std::string &url) -> std::shared_ptr<ndn::Data>
+            {
+              auto data = std::make_shared<ndn::Data>();
+              data->setContent("!!!H_DATA!!!");
+              return data;
+            },
+        },
     };
 
   } // namespace examples
