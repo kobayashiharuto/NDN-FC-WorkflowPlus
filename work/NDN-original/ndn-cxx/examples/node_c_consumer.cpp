@@ -48,12 +48,6 @@ namespace ndn
       {
         std::cout << "！！！！！！処理開始！！！！！！\n"
                   << std::endl;
-        std::cout << "！！！！！！処理開始！！！！！！\n"
-                  << std::endl;
-        std::cout << "！！！！！！処理開始！！！！！！\n"
-                  << std::endl;
-        std::cout << "！！！！！！処理開始！！！！！！\n"
-                  << std::endl;
         m_scheduler.schedule(0_s, [this]
                              { sendInterest("/X/func/( /B/data, /C/data, /D/data, /E/data, /F/data, /G/data, /H/data)"); });
 
@@ -92,7 +86,8 @@ namespace ndn
             auto end = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double, std::milli> elapsed = end - start_time;
 
-            std::cout << "データを受け取りました: " << contentStr << "℃\n";
+            std::cout << "データを受け取りました:\n"
+                      << contentStr << "\n";
             std::cout << "経過時間: " << elapsed.count() << " ms\n";
 
             // 使用した時刻をマップから削除
