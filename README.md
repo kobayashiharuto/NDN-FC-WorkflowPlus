@@ -4,15 +4,9 @@
 
 ローカルで実行。
 
-![Alt text](resources/image1.png)
+![Alt text](resources/image_check_multiple_content.png)
 
-`node_a_consumer.cpp` にてリクエストを送信。
-
-`/Y/func/( /B/data,  /X/func/(/C/data))` へリクエストし、2秒あけて `/Z/func/( /D/data,  /X/func/(/C/data))` へリクエストするを繰り返して検証。
-
-※ 同時にリクエストしてしまうと、`/X/func/(/C/data)` の処理を同時に要求してしまいキャッシュが使えないので2秒あけている。
-
-`work/NDN-original/ndn-cxx/examples/base_producer.hpp` の `disableCache` を切り替えてキャッシュありとなしを検証。
+`node_c_consumer.cpp` にてリクエストを送信。
 
 ## 温度設定と期待する出力
 
@@ -24,6 +18,10 @@
 /F/data: 10.1
 /G/data: 29.1
 /H/data: 3.0
+```
+
+```
+8.4
 ```
 
 ## 実験
