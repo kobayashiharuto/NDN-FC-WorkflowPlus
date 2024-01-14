@@ -23,6 +23,15 @@ namespace ndn
 
     inline const ContentProviderMap contentProviders = {
         {
+            "/A/data",
+            [](const std::string &url) -> std::shared_ptr<ndn::Data>
+            {
+              auto data = std::make_shared<ndn::Data>();
+              data->setContent("!!!A_DATA!!!");
+              return data;
+            },
+        },
+        {
             "/B/data",
             [](const std::string &url) -> std::shared_ptr<ndn::Data>
             {
