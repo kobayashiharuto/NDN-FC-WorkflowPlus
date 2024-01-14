@@ -46,16 +46,16 @@ namespace ndn
       void
       run()
       {
+        std::cout << "！！！！！！処理開始！！！！！！\n"
+                  << std::endl;
+        std::cout << "！！！！！！処理開始！！！！！！\n"
+                  << std::endl;
+        std::cout << "！！！！！！処理開始！！！！！！\n"
+                  << std::endl;
+        std::cout << "！！！！！！処理開始！！！！！！\n"
+                  << std::endl;
         m_scheduler.schedule(0_s, [this]
-                             { sendInterest("/X/func/( /A/data, /B/data, /C/data, /D/data, /E/data, /F/data, /G/data, /H/data)"); });
-        m_scheduler.schedule(1_s, [this]
-                             { sendInterest("/Z/func/( /A/data, /B/data, /C/data, /D/data, /E/data, /F/data, /G/data, /H/data)"); });
-        m_scheduler.schedule(2_s, [this]
-                             { sendInterest("/Y/func/( /A/data, /B/data, /C/data, /D/data, /E/data, /F/data, /G/data, /H/data)"); });
-        m_scheduler.schedule(3_s, [this]
-                             { sendInterest("/W/func/( /A/data, /B/data, /C/data, /D/data, /E/data, /F/data, /G/data, /H/data)"); });
-        m_scheduler.schedule(4_s, [this]
-                             { sendInterest("/W/func/( /X/func/( /A/data, /B/data ), /Y/func/( /C/data, /D/data ) )"); });
+                             { sendInterest("/X/func/( /B/data, /C/data, /D/data, /E/data, /F/data, /G/data, /H/data)"); });
 
         m_ioService.run();
       }
@@ -91,6 +91,8 @@ namespace ndn
             auto start_time = it->second;
             auto end = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double, std::milli> elapsed = end - start_time;
+
+            std::cout << "データを受け取りました: " << contentStr << "℃\n";
             std::cout << "経過時間: " << elapsed.count() << " ms\n";
 
             // 使用した時刻をマップから削除

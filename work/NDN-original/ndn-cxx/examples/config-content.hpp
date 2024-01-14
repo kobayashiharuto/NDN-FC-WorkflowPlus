@@ -27,7 +27,7 @@ namespace ndn
             [](const std::string &url) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
-              data->setContent("!!!A_DATA!!!");
+              data->setContent("21.4");
               return data;
             },
         },
@@ -36,7 +36,7 @@ namespace ndn
             [](const std::string &url) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
-              data->setContent("!!!B_DATA!!!");
+              data->setContent("22.6");
               return data;
             },
         },
@@ -45,7 +45,7 @@ namespace ndn
             [](const std::string &url) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
-              data->setContent("!!!C_DATA!!!");
+              data->setContent("10.3");
               return data;
             },
         },
@@ -54,7 +54,7 @@ namespace ndn
             [](const std::string &url) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
-              data->setContent("!!!D_DATA!!!");
+              data->setContent("-1.2");
               return data;
             },
         },
@@ -63,7 +63,7 @@ namespace ndn
             [](const std::string &url) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
-              data->setContent("!!!E_DATA!!!");
+              data->setContent("-15.1");
               return data;
             },
         },
@@ -72,7 +72,7 @@ namespace ndn
             [](const std::string &url) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
-              data->setContent("!!!F_DATA!!!");
+              data->setContent("10.1");
               return data;
             },
         },
@@ -81,7 +81,7 @@ namespace ndn
             [](const std::string &url) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
-              data->setContent("!!!G_DATA!!!");
+              data->setContent("29.1");
               return data;
             },
         },
@@ -90,7 +90,7 @@ namespace ndn
             [](const std::string &url) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
-              data->setContent("!!!H_DATA!!!");
+              data->setContent("3.0");
               return data;
             },
         },

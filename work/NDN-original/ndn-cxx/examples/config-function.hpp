@@ -30,15 +30,14 @@ namespace ndn
             [](const std::vector<ndn::Data> &dataResults, const std::string &functionName) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
-              std::string result;
+              double sum = 0.0;
               for (auto it = dataResults.begin(); it != dataResults.end(); ++it)
               {
-                result += dataContentToString(*it);
-                if (std::next(it) != dataResults.end())
-                {
-                  result += "-X-";
-                }
+                auto data = dataContentToString(*it);
+                sum += std::stod(data);
               }
+              auto average = sum / dataResults.size();
+              auto result = std::to_string(average);
               data->setContent(result);
               return data;
             },
