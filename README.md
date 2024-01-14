@@ -1,4 +1,21 @@
-## local
+# キャッシュの有効性チェック
+
+## 概要
+
+ローカルで実行。
+
+![Alt text](resources/image1.png)
+
+`node_a_consumer.cpp` にてリクエストを送信。
+
+`/Y/func/( /B/data,  /X/func/(/C/data))` へリクエストし、2秒あけて `/Z/func/( /D/data,  /X/func/(/C/data))` へリクエストするを繰り返して検証。
+
+※ 同時にリクエストしてしまうと、`/X/func/(/C/data)` の処理を同時に要求してしまいキャッシュが使えないので2秒あけている。
+
+`work/NDN-original/ndn-cxx/examples/base_producer.hpp` の `disableCache` を切り替えてキャッシュありとなしを検証。
+
+
+## 実験
 
 ### コンテナ構築
 
@@ -37,52 +54,4 @@ sh /work/NDN-original/sh_local/node_c_start.sh
 sh /work/NDN-original/sh_local/reinstall.sh
 nfd-start
 sh /work/NDN-original/sh_local/node_a_consumer_start.sh
-```
-
-
-## k8s
-
-### 実行
-```
-kubectl apply -f ./k8s
-```
-
-### コンテナに入る
-```
-kubectl get pods
-kubectl exec -it ポッド名 -- /bin/bash
-```
-
-### それぞれにコードを持ってくる
-
-```
-cd /home
-git clone https://github.com/kobayashiharuto/NDN-FC-WorkflowPlus.git
-export PKG_CONFIG_PATH="/home/NDN-FC-WorkflowPlus/work/NDN-original"
-```
-
-```A_producer
-cd /home/NDN-FC-WorkflowPlus/work/NDN-original/sh_k8s/
-sh rebuild.sh
-nfd-start
-sh node_a_start.sh
-```
-
-```_B
-cd /home/NDN-FC-WorkflowPlus/work/NDN-original/sh_k8s/
-sh rebuild.sh
-nfd-start
-sh node_b_start.sh
-```
-
-```_C
-cd /home/NDN-FC-WorkflowPlus/work/NDN-original/sh_k8s/
-sh rebuild.sh
-nfd-start
-sh node_c_start.sh
-```
-
-
-```A_consumer
-/home/NDN-FC-WorkflowPlus/work/NDN-original/ndn-cxx/build/examples/node_a_consumer
 ```
