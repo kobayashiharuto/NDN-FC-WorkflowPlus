@@ -48,7 +48,10 @@ namespace ndn
       {
         std::cout << "！！！！！！処理開始！！！！！！\n"
                   << std::endl;
+
         m_scheduler.schedule(0_s, [this]
+                             { sendInterest("/X/func/( /B/data, /C/data, /D/data, /E/data, /F/data, /G/data, /H/data)"); });
+        m_scheduler.schedule(2_s, [this]
                              { sendInterest("/W/func/( /X/func/( /B/data, /C/data ), /X/func/( /D/data, /E/data ), /Y/func/( /F/data, /G/data, /Z/func/( /H/data ) ) )"); });
 
         m_ioService.run();
