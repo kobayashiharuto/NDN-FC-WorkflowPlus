@@ -26,70 +26,83 @@ namespace ndn
 
     inline const FunctionProviderMap functionProviders = {
         {
+            // 最大値を返す関数
             "/X/func",
             [](const std::vector<ndn::Data> &dataResults, const std::string &functionName) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
-              double sum = 0.0;
+              double max = -10000;
               for (auto it = dataResults.begin(); it != dataResults.end(); ++it)
               {
                 auto data = dataContentToString(*it);
-                sum += std::stod(data);
+                auto value = std::stod(data);
+                if (value > max)
+                {
+                  max = value;
+                }
               }
-              auto average = sum / dataResults.size();
-              auto result = std::to_string(average);
+              auto result = std::to_string(max);
               data->setContent(result);
               return data;
             },
         },
         {
+            // 最小値を返す関数
             "/Y/func",
             [](const std::vector<ndn::Data> &dataResults, const std::string &functionName) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
-              std::string result;
+              double min = 10000;
               for (auto it = dataResults.begin(); it != dataResults.end(); ++it)
               {
-                result += dataContentToString(*it);
-                if (std::next(it) != dataResults.end())
+                auto data = dataContentToString(*it);
+                auto value = std::stod(data);
+                if (value < min)
                 {
-                  result += "-Y-";
+                  min = value;
                 }
               }
+              auto result = std::to_string(min);
               data->setContent(result);
               return data;
             },
         },
         {
+            // 華氏を摂氏に変換する関数
             "/Z/func",
             [](const std::vector<ndn::Data> &dataResults, const std::string &functionName) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
-              std::string result;
+              double fahrenheit = 0.0;
               for (auto it = dataResults.begin(); it != dataResults.end(); ++it)
               {
-                result += dataContentToString(*it);
-                if (std::next(it) != dataResults.end())
-                {
-                  result += "-Z-";
-                }
+                auto data = dataContentToString(*it);
+                auto value = std::stod(data);
+                fahrenheit = value;
               }
+              auto result = std::to_string((fahrenheit - 32) * 5 / 9);
               data->setContent(result);
               return data;
             },
         },
         {
+            // 結果をまとめて返す関数 (例: 報告結果: 〇〇℃, △△℃, □□℃, ...)
             "/W/func",
             [](const std::vector<ndn::Data> &dataResults, const std::string &functionName) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
-              std::string result;
+              std::string result = "報告結果: ";
               for (auto it = dataResults.begin(); it != dataResults.end(); ++it)
               {
-                result += dataContentToString(*it);
-                if (std::next(it) != dataResults.end())
+                auto data = dataContentToString(*it);
+                // 最後にカンマをつけない
+                if (it == dataResults.end() - 1)
                 {
-                  result += "-W-";
+                  result += data;
+                }
+                else
+                {
+                  result += data + ", ";
                 }
               }
               data->setContent(result);

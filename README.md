@@ -1,10 +1,10 @@
-# 複数コンテンツを引数とする処理の動作確認
+# 複雑なチェイン処理の動作確認
 
 ## 概要
 
 ローカルで実行。
 
-![Alt text](resources/image_check_multiple_content.png)
+![Alt text](resources/image_check_complex_chain.png)
 
 `node_c_consumer.cpp` にてリクエストを送信。
 
@@ -12,12 +12,12 @@
 
 ```
 /B/data: 22.6
-/C/data: 10.3
+/C/data: 21.3
 /D/data: -1.2
 /E/data: -15.1
-/F/data: 10.1
-/G/data: 29.1
-/H/data: 3.0
+/F/data: 13.1
+/G/data: 14.1
+/H/data: 50.2
 ```
 
 ```

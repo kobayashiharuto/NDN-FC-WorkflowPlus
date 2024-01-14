@@ -23,15 +23,6 @@ namespace ndn
 
     inline const ContentProviderMap contentProviders = {
         {
-            "/A/data",
-            [](const std::string &url) -> std::shared_ptr<ndn::Data>
-            {
-              auto data = std::make_shared<ndn::Data>();
-              data->setContent("21.4");
-              return data;
-            },
-        },
-        {
             "/B/data",
             [](const std::string &url) -> std::shared_ptr<ndn::Data>
             {
@@ -45,7 +36,7 @@ namespace ndn
             [](const std::string &url) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
-              data->setContent("10.3");
+              data->setContent("21.3");
               return data;
             },
         },
@@ -72,7 +63,7 @@ namespace ndn
             [](const std::string &url) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
-              data->setContent("10.1");
+              data->setContent("13.1");
               return data;
             },
         },
@@ -81,7 +72,7 @@ namespace ndn
             [](const std::string &url) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
-              data->setContent("29.1");
+              data->setContent("14.1");
               return data;
             },
         },
@@ -90,7 +81,7 @@ namespace ndn
             [](const std::string &url) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
-              data->setContent("3.0");
+              data->setContent("50.2");
               return data;
             },
         },
