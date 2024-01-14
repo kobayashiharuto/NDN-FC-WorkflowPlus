@@ -42,6 +42,9 @@ namespace ndn
 
     class MyConsumer
     {
+    private:
+      bool disableCache = false;
+
     public:
       void
       run()
@@ -50,9 +53,9 @@ namespace ndn
                   << std::endl;
 
         m_scheduler.schedule(0_s, [this]
-                             { sendInterest("/X/func/( /B/data, /C/data, /D/data, /E/data, /F/data, /G/data, /H/data)"); });
+                             { sendInterest("/X/func/( /B/data )"); });
         m_scheduler.schedule(2_s, [this]
-                             { sendInterest("/W/func/( /X/func/( /B/data, /C/data ), /X/func/( /D/data, /E/data ), /Y/func/( /F/data, /G/data, /Z/func/( /H/data ) ) )"); });
+                             { sendInterest("/X/func/( /B/data )"); });
 
         m_ioService.run();
       }
@@ -115,10 +118,23 @@ namespace ndn
       void sendInterest(std::string name)
       {
         Name interestName(name);
-        interestName.appendVersion();
+
+        if (disableCache)
+        {
+          interestName.appendVersion();
+        }
 
         Interest interest(interestName);
-        interest.setMustBeFresh(true);
+
+        if (disableCache)
+        {
+          interest.setMustBeFresh(true);
+        }
+        else
+        {
+          interest.setMustBeFresh(false);
+        }
+
         interest.setInterestLifetime(100_s);
 
         myLog("Interest を送信しました。\nURL: " + urlDecodeAndTrim(interest.getName().toUri()));

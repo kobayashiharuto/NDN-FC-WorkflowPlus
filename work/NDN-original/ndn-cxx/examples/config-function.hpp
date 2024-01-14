@@ -26,22 +26,16 @@ namespace ndn
 
     inline const FunctionProviderMap functionProviders = {
         {
-            // 最大値を返す関数
             "/X/func",
             [](const std::vector<ndn::Data> &dataResults, const std::string &functionName) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
-              double max = -10000;
+              std::string result = "";
               for (auto it = dataResults.begin(); it != dataResults.end(); ++it)
               {
-                auto data = dataContentToString(*it);
-                auto value = std::stod(data);
-                if (value > max)
-                {
-                  max = value;
-                }
+                result = dataContentToString(*it);
               }
-              auto result = std::to_string(max);
+              std::this_thread::sleep_for(std::chrono::seconds(1));
               data->setContent(result);
               return data;
             },

@@ -1,30 +1,16 @@
-# 複雑なチェイン処理の動作確認
+# キャッシュの動作確認
 
 ## 概要
 
 ローカルで実行。
 
-![Alt text](resources/image_check_complex_chain.png)
+![Alt text](resources/image_check_cache.png)
 
 `node_c_consumer.cpp` にてリクエストを送信。
 
-## 温度設定と期待する出力
-
 ```
 データ
-/B/data: 22.6
-/C/data: 21.3
-/D/data: -1.2
-/E/data: -15.1
-/F/data: 13.1
-/G/data: 14.1
-/H/data: 50.2
-
-報告結果のテンプレ(/W/func での整形で期待する形)
-報告結果: {data1}℃, {data2}℃, ... {dataN}℃
-
-期待する出力
-報告結果: 22.600000℃, -1.200000℃, 10.111111℃
+/B/data: B_DATA
 ```
 
 ## 実験

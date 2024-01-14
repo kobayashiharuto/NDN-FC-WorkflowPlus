@@ -27,7 +27,7 @@ namespace ndn
             [](const std::string &url) -> std::shared_ptr<ndn::Data>
             {
               auto data = std::make_shared<ndn::Data>();
-              data->setContent("22.6");
+              data->setContent("BのDATA");
               return data;
             },
         },
