@@ -98,11 +98,11 @@ namespace ndn
                 // 最後にカンマをつけない
                 if (it == dataResults.end() - 1)
                 {
-                  result += data;
+                  result += data + "℃";
                 }
                 else
                 {
-                  result += data + ", ";
+                  result += data + "℃, ";
                 }
               }
               data->setContent(result);
