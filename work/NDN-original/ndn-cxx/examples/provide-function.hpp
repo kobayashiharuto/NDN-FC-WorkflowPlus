@@ -15,7 +15,7 @@ namespace ndn
 {
   namespace examples
   {
-    std::shared_ptr<ndn::Data> executeFunction(const std::vector<ndn::Data> &dataResults, const std::string &functionName)
+    std::string executeFunction(const std::vector<std::string> &dataResults, const std::string &functionName)
     {
       myLog("function処理を実行します。 function: " + functionName);
 
@@ -29,9 +29,7 @@ namespace ndn
       else
       {
         // 関数が見つからなかった場合
-        auto data = std::make_shared<ndn::Data>();
-        data->setContent("Function not found");
-        return data;
+        return "Function not found";
       }
     }
   }

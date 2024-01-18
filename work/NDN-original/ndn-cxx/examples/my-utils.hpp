@@ -38,7 +38,7 @@ namespace ndn
     void myLog(const std::string &message)
     {
       // return;
-      std::cout << "MY_LOG[" << getCurrentTimeWithMilliseconds() << "]: " << message << std::endl;
+      std::cout << "LOG[" << getCurrentTimeWithMilliseconds() << "]: " << message << std::endl;
     }
 
     // URLデコードを行う

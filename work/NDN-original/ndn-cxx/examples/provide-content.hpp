@@ -14,11 +14,9 @@ namespace ndn
 {
   namespace examples
   {
-    std::shared_ptr<ndn::Data> getContent(const ndn::Interest &interest)
+    std::string getContent(const ndn::Interest &interest)
     {
-      std::string url = urlDecodeAndTrim(interest.getName().toUri());
-      myLog("data リクエストとして処理をします。\nURL: " + url);
-
+      std::string url = urlDecodeAndTrim(interest.getName().getPrefix(-1).toUri());
       // マップからコンテンツを取得
       auto providerIt = contentProviders.find(url);
       if (providerIt != contentProviders.end())
@@ -27,9 +25,7 @@ namespace ndn
       }
       else
       {
-        auto data = std::make_shared<ndn::Data>();
-        data->setContent("not found");
-        return data;
+        return "not found";
       }
     }
   }

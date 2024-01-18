@@ -14,6 +14,7 @@
 #include "benchmark.hpp"
 
 using ndn::examples::dataContentToString;
+using ndn::examples::decryptCaesarCipher;
 using ndn::examples::hashString;
 using ndn::examples::myLog;
 
@@ -21,80 +22,64 @@ namespace ndn
 {
   namespace examples
   {
-    using FunctionProvider = std::function<std::shared_ptr<ndn::Data>(const std::vector<ndn::Data> &, const std::string &)>;
+    using FunctionProvider = std::function<std::string(const std::vector<std::string> &, const std::string &)>;
     using FunctionProviderMap = std::unordered_map<std::string, FunctionProvider>;
 
     inline const FunctionProviderMap functionProviders = {
         {
             "/X/func",
-            [](const std::vector<ndn::Data> &dataResults, const std::string &functionName) -> std::shared_ptr<ndn::Data>
+            [](const std::vector<std::string> &dataResults, const std::string &functionName) -> std::string
             {
-              auto data = std::make_shared<ndn::Data>();
-              std::string result;
-              for (auto it = dataResults.begin(); it != dataResults.end(); ++it)
-              {
-                result += dataContentToString(*it);
-                if (std::next(it) != dataResults.end())
-                {
-                  result += "-X-";
-                }
-              }
-              data->setContent(result);
-              return data;
+              std::string result = decryptCaesarCipher(dataResults[0], -1);
+              return result;
             },
         },
         {
             "/Y/func",
-            [](const std::vector<ndn::Data> &dataResults, const std::string &functionName) -> std::shared_ptr<ndn::Data>
+            [](const std::vector<std::string> &dataResults, const std::string &functionName) -> std::string
             {
-              auto data = std::make_shared<ndn::Data>();
               std::string result;
               for (auto it = dataResults.begin(); it != dataResults.end(); ++it)
               {
-                result += dataContentToString(*it);
+                result += *it;
                 if (std::next(it) != dataResults.end())
                 {
                   result += "-Y-";
                 }
               }
-              data->setContent(result);
-              return data;
+              return result;
             },
         },
         {
             "/Z/func",
-            [](const std::vector<ndn::Data> &dataResults, const std::string &functionName) -> std::shared_ptr<ndn::Data>
+            [](const std::vector<std::string> &dataResults, const std::string &functionName) -> std::string
             {
-              auto data = std::make_shared<ndn::Data>();
               std::string result;
               for (auto it = dataResults.begin(); it != dataResults.end(); ++it)
               {
-                result += dataContentToString(*it);
+                result += *it;
                 if (std::next(it) != dataResults.end())
                 {
                   result += "-Z-";
                 }
               }
-              data->setContent(result);
-              return data;
+              return result;
             },
         },
         {
             "/W/func",
-            [](const std::vector<ndn::Data> &dataResults, const std::string &functionName) -> std::shared_ptr<ndn::Data>
+            [](const std::vector<std::string> &dataResults, const std::string &functionName) -> std::string
             {
-              auto data = std::make_shared<ndn::Data>();
               std::string result;
               for (auto it = dataResults.begin(); it != dataResults.end(); ++it)
               {
-                result += dataContentToString(*it);
+                result += *it;
                 if (std::next(it) != dataResults.end())
                 {
                   result += "-W-";
                 }
               }
-              data->setContent(result);
-              return data;
+              return result;
             },
         },
     };

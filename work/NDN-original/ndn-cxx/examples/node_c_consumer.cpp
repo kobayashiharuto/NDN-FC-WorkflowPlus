@@ -42,22 +42,16 @@ namespace ndn
 
     class MyConsumer
     {
+
+    public:
+      bool disableCache = false;
+
     public:
       void
       run()
       {
-        m_scheduler.schedule(0_s, [this]
-                             { sendInterest("/A/data"); });
-        // m_scheduler.schedule(0_s, [this]
-        //                      { sendInterest("/X/func/( /A/data, /B/data, /C/data, /D/data, /E/data, /F/data, /G/data, /H/data)"); });
-        // m_scheduler.schedule(1_s, [this]
-        //                      { sendInterest("/Z/func/( /A/data, /B/data, /C/data, /D/data, /E/data, /F/data, /G/data, /H/data)"); });
-        // m_scheduler.schedule(2_s, [this]
-        //                      { sendInterest("/Y/func/( /A/data, /B/data, /C/data, /D/data, /E/data, /F/data, /G/data, /H/data)"); });
-        // m_scheduler.schedule(3_s, [this]
-        //                      { sendInterest("/W/func/( /A/data, /B/data, /C/data, /D/data, /E/data, /F/data, /G/data, /H/data)"); });
-        // m_scheduler.schedule(4_s, [this]
-        //                      { sendInterest("/W/func/( /X/func/( /A/data, /B/data ), /Y/func/( /C/data, /D/data ) )"); });
+        m_scheduler.schedule(1_s, [this]
+                             { sendInterest("/X/func/( /B/data )"); });
 
         m_ioService.run();
       }
@@ -71,19 +65,71 @@ namespace ndn
                                      }));
       }
 
-    private:
-      void
-      onData(const Interest &interest, const Data &data) const
+      // データを受け取った際のセグメント対応などを行い、最終的にデータを結合した結果をコールバック関数を呼び出す
+      // データがセグメンテーション分割されている場合は、それそれのセグメントにリクエストを行い、それぞれのデータが返ってくるたび onData を呼び出す
+      // そして、最後のセグメントが返ってきたら、データを結合してコールバック関数を呼び出す形
+    public:
+      void onData(const Interest &interest, const ndn::Data &data)
       {
-        // std::cout << "Received Data " << data << std::endl;
+        std::string decodedUrl = urlDecodeAndTrim(interest.getName().toUri());
+        std::cout << "Url: " << decodedUrl << std::endl;
+        std::cout << "Segment No.: " << data.getName().get(-1).toSegment() << std::endl;
+        std::cout << "Final Block No.: " << data.getFinalBlock()->toSegment() << std::endl;
 
-        if (data.hasContent())
+        // Add Segments to Buffer
+        std::cout << "Loading receiveBuffer: " << data.getName().get(-1).toSegment() << std::endl;
+        std::string dataName = urlDecodeAndTrim(data.getName().getPrefix(-1).toUri()); // セグメント番号を除いた名前の文字列を取得
+        receiveBuffer[dataName][data.getName().get(-1).toSegment()] = data.shared_from_this();
+
+        // セグメント番号が0のときは final block id が返ってくるタイプなので、Prefixとファイル名を取得
+        if (data.getName().get(-1).toSegment() == 0)
         {
-          const Block &content = data.getContent();
-          const uint8_t *buffer = content.value();
-          size_t size = content.value_size();
-          std::string contentStr(reinterpret_cast<const char *>(buffer), size);
-          myLog("コンテンツを受け取りました！: " + contentStr);
+          incomingFinalBlockNumber[dataName] = data.getFinalBlock()->toSegment();
+
+          // もし、FinalBlockNumberが0以上の場合、それぞれのセグメントをInterestで要求する
+          if (incomingFinalBlockNumber[dataName] > 0)
+          {
+            for (uint64_t i = 1; i <= incomingFinalBlockNumber[dataName]; i++)
+            {
+              Name name(dataName);
+              name.appendSegment(i);
+              Interest newInterest(name);
+              newInterest.setInterestLifetime(interest.getInterestLifetime());
+              newInterest.setMustBeFresh(interest.getMustBeFresh());
+              std::cout << "Sending Interests: " << name << std::endl;
+              m_face.expressInterest(
+                  newInterest,
+                  [this](const Interest &interest, const ndn::Data &data)
+                  {
+                    onData(interest, data);
+                  },
+                  std::bind(&MyConsumer::onNack, this, _1, _2),
+                  std::bind(&MyConsumer::onTimeout, this, _1));
+            }
+          }
+        }
+
+        // 最後のセグメント番号と同じ数だけデータを受け取ったら、データを結合
+        if (receiveBuffer[dataName].size() == incomingFinalBlockNumber[dataName] + 1)
+        {
+          std::cout << "全データが揃いました: " << dataName << std::endl;
+          // データの結合
+          std::string combinedData;
+          for (const auto &segment : receiveBuffer[dataName])
+          {
+            const std::string segmentContent = dataContentToString(*(segment.second));
+            combinedData += segmentContent; // 各セグメントを文字列に変換して結合
+          }
+
+          if (combinedData.size() < 1000)
+          {
+            myLog("コンテンツを受け取りました！: " + combinedData);
+          }
+          else
+          {
+            myLog("コンテンツを受け取りました！: " + combinedData.substr(0, 1000) + "...");
+          }
+
           myLog("URL: " + interest.getName().toUri());
 
           // Interest 名に対応する開始時刻をマップから取得
@@ -98,6 +144,8 @@ namespace ndn
             // 使用した時刻をマップから削除
             start_times.erase(it);
           }
+          // バッファをクリア
+          receiveBuffer[dataName].clear();
         }
       }
 
@@ -117,13 +165,13 @@ namespace ndn
       void sendInterest(std::string name)
       {
         Name interestName(name);
-        interestName.appendVersion();
+        interestName.appendSegment(0);
 
         Interest interest(interestName);
         interest.setMustBeFresh(true);
         interest.setInterestLifetime(100_s);
 
-        myLog("Interest を送信しました。\nURL: " + urlDecodeAndTrim(interest.getName().toUri()));
+        myLog("Interest を送信しました。");
 
         // この Interest の開始時刻をマップに記録
         start_times[interest.getName().toUri()] = std::chrono::high_resolution_clock::now();
@@ -141,6 +189,8 @@ namespace ndn
       Scheduler m_scheduler{m_ioService};
       std::vector<std::future<void>> futures;
       mutable std::map<std::string, std::chrono::time_point<std::chrono::high_resolution_clock>> start_times;
+      std::map<std::string, std::map<uint64_t, std::shared_ptr<const Data>>> receiveBuffer;
+      std::map<std::string, uint64_t> incomingFinalBlockNumber;
     };
 
   } // namespace examples

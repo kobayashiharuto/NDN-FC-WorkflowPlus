@@ -20,83 +20,68 @@ namespace ndn
   namespace examples
   {
 
-    using ContentProvider = std::function<std::shared_ptr<ndn::Data>(const std::string &)>;
+    using ContentProvider = std::function<std::string(const std::string &)>;
     using ContentProviderMap = std::unordered_map<std::string, ContentProvider>;
 
     inline const ContentProviderMap contentProviders = {
         {
             "/A/data",
-            [](const std::string &url) -> std::shared_ptr<ndn::Data>
+            [](const std::string &url) -> std::string
             {
-              auto data = std::make_shared<ndn::Data>();
-
-              std::string imagePath = "/work/experimental_data/mandrill.bmp";
-              std::string encodedImage = encodeImageToBase64(imagePath);
-              data->setContent(encodedImage);
-              return data;
+              return "Vhsg sgd qzohc hmbqdzrd hm sgd mtladq ne HnS cduhbdr hm qdbdms xdzqr, sgd deedbshud tshkhyzshnm zmc lzmzfdldms ne sgdrd cduhbdr gzr adbnld hmbqdzrhmfkx hlonqszms. Hm ozqshbtkzq, HnS sdbgmnknfx hr adhmf trdc hm z vhcd qzmfd ne zookhbzshnmr, hmbktchmf rlzqs bhshdr, sgd ztsnlnshud hmctrsqx, zmc sgd ldchbzk ehdkc, vghbg qdpthqd kzqfd zlntmsr ne czsz zmc ghfg-roddc oqnbdrrhmf fdmdqzsdc ax sghr sdbgmnknfx.";
             },
         },
         {
             "/B/data",
-            [](const std::string &url) -> std::shared_ptr<ndn::Data>
+            [](const std::string &url) -> std::string
             {
-              auto data = std::make_shared<ndn::Data>();
-              data->setContent("!!!B_DATA!!!");
-              return data;
+              return "Vhsg sgd qzohc hmbqdzrd hm sgd mtladq ne HnS cduhbdr hm qdbdms xdzqr, sgd deedbshud tshkhyzshnm zmc lzmzfdldms ne sgdrd cduhbdr gzr adbnld hmbqdzrhmfkx hlonqszms. Hm ozqshbtkzq, HnS sdbgmnknfx hr adhmf trdc hm z vhcd qzmfd ne zookhbzshnmr, hmbktchmf rlzqs bhshdr, sgd ztsnlnshud hmctrsqx, zmc sgd ldchbzk ehdkc, vghbg qdpthqd kzqfd zlntmsr ne czsz zmc ghfg-roddc oqnbdrrhmf fdmdqzsdc ax sghr sdbgmnknfx.";
             },
         },
         {
             "/C/data",
-            [](const std::string &url) -> std::shared_ptr<ndn::Data>
+            [](const std::string &url) -> std::string
             {
-              auto data = std::make_shared<ndn::Data>();
-              data->setContent("!!!C_DATA!!!");
-              return data;
+              std::string imagePath = "/work/experimental_data/mandrill.bmp";
+              std::string encodedImage = encodeImageToBase64(imagePath).substr(0, 300);
+              return encodedImage;
             },
         },
         {
             "/D/data",
-            [](const std::string &url) -> std::shared_ptr<ndn::Data>
+            [](const std::string &url) -> std::string
             {
-              auto data = std::make_shared<ndn::Data>();
-              data->setContent("!!!D_DATA!!!");
-              return data;
+              std::string imagePath = "/work/experimental_data/mandrill.bmp";
+              std::string encodedImage = encodeImageToBase64(imagePath).substr(0, 500);
+              return encodedImage;
             },
         },
         {
             "/E/data",
-            [](const std::string &url) -> std::shared_ptr<ndn::Data>
+            [](const std::string &url) -> std::string
             {
-              auto data = std::make_shared<ndn::Data>();
-              data->setContent("!!!E_DATA!!!");
-              return data;
+              return "!!!E_DATA!!!";
             },
         },
         {
             "/F/data",
-            [](const std::string &url) -> std::shared_ptr<ndn::Data>
+            [](const std::string &url) -> std::string
             {
-              auto data = std::make_shared<ndn::Data>();
-              data->setContent("!!!F_DATA!!!");
-              return data;
+              return "!!!F_DATA!!!";
             },
         },
         {
             "/G/data",
-            [](const std::string &url) -> std::shared_ptr<ndn::Data>
+            [](const std::string &url) -> std::string
             {
-              auto data = std::make_shared<ndn::Data>();
-              data->setContent("!!!G_DATA!!!");
-              return data;
+              return "!!!G_DATA!!!";
             },
         },
         {
             "/H/data",
-            [](const std::string &url) -> std::shared_ptr<ndn::Data>
+            [](const std::string &url) -> std::string
             {
-              auto data = std::make_shared<ndn::Data>();
-              data->setContent("!!!H_DATA!!!");
-              return data;
+              return "!!!H_DATA!!!";
             },
         },
     };

@@ -25,6 +25,9 @@
 
 #include <iostream>
 #include <mutex>
+#include <memory>
+#include <map>
+#include <vector>
 #include <thread>
 #include <future>
 
@@ -55,13 +58,6 @@ namespace ndn
       virtual void run() = 0;
 
     public:
-      bool disableCache = false;
-      Face m_face;
-      KeyChain m_keyChain;
-      std::vector<std::future<void>> futures;
-      ScopedRegisteredPrefixHandle m_certServeHandle;
-
-    public:
       void executeAsync(std::function<void()> callback = [] {})
       {
         futures.push_back(std::async(std::launch::async, [callback]
@@ -81,8 +77,6 @@ namespace ndn
         // [前提知識]:
         // 関数として振る舞うことを期待されているリクエストを function リクエストと呼ぶ
         // 対して、データとして振る舞うことを期待されているリクエストを data リクエストと呼ぶ
-        ndn::Data data;
-
         if (isFunctionRequest(interest))
         {
           processFunctionRequest(interest);
@@ -107,13 +101,27 @@ namespace ndn
     public:
       void processDataRequest(const ndn::Interest &interest)
       {
-        auto data = getContent(interest);
+        std::string dataName = urlDecodeAndTrim(interest.getName().getPrefix(-1).toUri());
+        uint64_t segment = interest.getName().get(-1).toSegment();
 
-        data->setName(interest.getName());
-        data->setFreshnessPeriod(10_s);
+        // セグメントが0でない場合は、そのセグメントのデータを送信
+        if (segment > 0)
+        {
+          std::cout << "セグメント分割済みのデータを送信します: Seg No." << segment << std::endl;
+          m_keyChain.sign(*(dataSegments[dataName][segment]));
+          m_face.put(*(dataSegments[dataName][segment]));
+        }
+        else
+        { // セグメントが0の時はセグメント分割して格納し、final block ID を返信
+          myLog("final block ID を送信します");
+          auto data = getContent(interest);
+          auto segmentedData = segmentData(data, dataName);
+          dataSegments[dataName] = segmentedData;
 
-        m_keyChain.sign(*data);
-        m_face.put(*data);
+          auto initData = segmentedData[0];
+          m_keyChain.sign(*initData);
+          m_face.put(*initData);
+        }
       }
 
       // URLをパース(渡すURLはすでにデコード済みである必要がある)
@@ -127,7 +135,19 @@ namespace ndn
     public:
       void processFunctionRequest(const ndn::Interest &interest)
       {
-        std::string url = urlDecodeAndTrim(interest.getName().toUri());
+        std::string url = urlDecodeAndTrim(interest.getName().getPrefix(-1).toUri());
+        uint64_t segment = interest.getName().get(-1).toSegment();
+
+        // セグメントが0でない場合は、そのセグメントのデータを送信
+        if (segment > 0)
+        {
+          m_keyChain.sign(*(dataSegments[url][segment]));
+          m_face.put(*(dataSegments[url][segment]));
+          std::cout << "Functioned Sending Data for Seg.: " << segment << std::endl;
+          return;
+        }
+
+        // セグメントが0の時はデータを集めて関数にかけて、セグメント分割して格納し、final block ID を返信
         std::string functionName = extractFunctionName(url);
 
         myLog("function リクエストとして処理をします。\nURL: " + url + "\n関数名: " + functionName);
@@ -136,7 +156,7 @@ namespace ndn
         std::vector<std::string> args = parseFunctionArgs(url);
 
         // データを集めるための一時的な場所を用意
-        auto dataList = std::make_shared<std::vector<Data>>(args.size());
+        auto dataList = std::make_shared<std::vector<std::string>>(args.size());
 
         // データが揃ったかどうかを確認するためのカウンタ
         auto counter = std::make_shared<std::atomic<size_t>>(0);
@@ -148,10 +168,9 @@ namespace ndn
         for (size_t i = 0; i < args.size(); ++i)
         {
           myLog("データを取得します。\nURL: " + args[i]);
-          sendInterest(args[i], [this, i, interest, url, functionName, dataList, counter, total](const ndn::Data &data)
+          sendInterest(args[i], [this, i, interest, url, functionName, dataList, counter, total](const std::string &data)
                        {
-                         auto dataStr = dataContentToString(data);
-                         myLog("データ取得完了: " + dataStr + "\nURL: " + url + "\n");
+                         myLog("データ取得完了: " + data + "\nURL: " + url + "\n");
 
                          (*counter)++;
                          (*dataList)[i] = data;
@@ -164,17 +183,18 @@ namespace ndn
                          {
                            // 全てのデータが揃ったら executeFunction を呼び出す
                            myLog("全てのデータが揃いました。");
-                           executeAsync([this, dataList, functionName, interest]
+                           executeAsync([this, dataList, url, functionName, interest]
                                         {
                                           auto functionResultData = executeFunction(*dataList, functionName);
                                           myLog("関数の実行結果を受け取りました。");
 
-                                          // 送信
-                                          functionResultData->setName(interest.getName());
-                                          functionResultData->setFreshnessPeriod(10_s);
+                                          myLog("データをセグメント化します");
+                                          auto segmentedData = segmentData(functionResultData, url);
+                                          dataSegments[url] = segmentedData;
 
-                                          this->m_keyChain.sign(*functionResultData);
-                                          this->m_face.put(*functionResultData);
+                                          auto data = segmentedData[0];
+                                          m_keyChain.sign(*data);
+                                          m_face.put(*data);
                                           //
                                         });
                          }
@@ -183,30 +203,18 @@ namespace ndn
         }
       }
 
+      // セグメント対応とかもやってくれるので、callbackでは結合されたデータが返ってくるよ
     public:
-      void sendInterest(const std::string &name, const std::function<void(const ndn::Data &)> &callback)
+      void sendInterest(const std::string &name, const std::function<void(const std::string &)> &callback)
       {
         Name interestName(name);
-
-        if (disableCache)
-        {
-          interestName.appendVersion();
-        }
+        interestName.appendSegment(0);
 
         Interest interest(interestName);
-
-        if (disableCache)
-        {
-          interest.setMustBeFresh(true);
-        }
-        else
-        {
-          interest.setMustBeFresh(false);
-        }
-
+        interest.setMustBeFresh(true);
         interest.setInterestLifetime(100_s);
 
-        myLog("Interest を送信しました。\nURL: " + urlDecodeAndTrim(interest.getName().toUri()));
+        myLog("Interest を送信しました。");
         m_face.expressInterest(
             interest,
             [this, callback](const Interest &interest, const ndn::Data &data)
@@ -217,16 +225,67 @@ namespace ndn
             std::bind(&BaseProducer::onTimeout, this, _1));
       }
 
+      // データを受け取った際のセグメント対応などを行い、最終的にデータを結合した結果をコールバック関数を呼び出す
+      // データがセグメンテーション分割されている場合は、それそれのセグメントにリクエストを行い、それぞれのデータが返ってくるたび onData を呼び出す
+      // そして、最後のセグメントが返ってきたら、データを結合してコールバック関数を呼び出す形
     public:
-      void onData(const Interest &interest, const ndn::Data &data, const std::function<void(const ndn::Data &)> &callback) const
+      void onData(const Interest &interest, const ndn::Data &data, const std::function<void(const std::string &)> &callback)
       {
-        // std::cout << "Received Data " << data << std::endl;
+        std::string decodedUrl = urlDecodeAndTrim(interest.getName().toUri());
+        std::cout << "Url: " << decodedUrl << std::endl;
+        std::cout << "Segment No.: " << data.getName().get(-1).toSegment() << std::endl;
+        std::cout << "Final Block No.: " << data.getFinalBlock()->toSegment() << std::endl;
 
-        if (data.hasContent())
+        // Add Segments to Buffer
+        std::cout << "Loading receiveBuffer: " << data.getName().get(-1).toSegment() << std::endl;
+        std::string dataName = urlDecodeAndTrim(data.getName().getPrefix(-1).toUri()); // セグメント番号を除いた名前の文字列を取得
+        receiveBuffer[dataName][data.getName().get(-1).toSegment()] = data.shared_from_this();
+
+        // セグメント番号が0のときは final block id が返ってくるタイプなので、Prefixとファイル名を取得
+        if (data.getName().get(-1).toSegment() == 0)
         {
-          myLog("コンテンツを受け取りました！");
-          // コールバック関数を呼び出してデータを渡す
-          callback(data);
+          incomingFinalBlockNumber[dataName] = data.getFinalBlock()->toSegment();
+
+          // もし、FinalBlockNumberが0以上の場合、それぞれのセグメントをInterestで要求する
+          if (incomingFinalBlockNumber[dataName] > 0)
+          {
+            for (uint64_t i = 1; i <= incomingFinalBlockNumber[dataName]; i++)
+            {
+              Name name(dataName);
+              name.appendSegment(i);
+              Interest newInterest(name);
+              newInterest.setInterestLifetime(interest.getInterestLifetime());
+              newInterest.setMustBeFresh(interest.getMustBeFresh());
+              std::cout << "Sending Interests: " << name << std::endl;
+              m_face.expressInterest(
+                  newInterest,
+                  [this, callback](const Interest &interest, const ndn::Data &data)
+                  {
+                    onData(interest, data, callback);
+                  },
+                  std::bind(&BaseProducer::onNack, this, _1, _2),
+                  std::bind(&BaseProducer::onTimeout, this, _1));
+            }
+          }
+        }
+
+        // 最後のセグメント番号と同じ数だけデータを受け取ったら、データを結合
+        if (receiveBuffer[dataName].size() == incomingFinalBlockNumber[dataName] + 1)
+        {
+          std::cout << "全データが揃いました: " << dataName << std::endl;
+          // データの結合
+          std::string combinedData;
+          for (const auto &segment : receiveBuffer[dataName])
+          {
+            const std::string segmentContent = dataContentToString(*(segment.second));
+            combinedData += segmentContent; // 各セグメントを文字列に変換して結合
+          }
+
+          // コールバック関数を呼び出し
+          callback(combinedData);
+
+          // バッファをクリア
+          receiveBuffer[dataName].clear();
         }
       }
 
@@ -245,6 +304,7 @@ namespace ndn
         std::cout << "Timeout for " << interest << std::endl;
       }
 
+    public:
       void
       onRegisterFailed(const Name &prefix, const std::string &reason)
       {
@@ -252,6 +312,57 @@ namespace ndn
                   << "' with the local forwarder (" << reason << ")\n";
         m_face.shutdown();
       }
-    };
-  } // namespace examples
-} // namespace ndn
+
+      // 与えられたデータをセグメントに分割する
+      std::vector<std::shared_ptr<Data>> segmentData(const std::string &inputData, const std::string &baseName)
+      {
+        std::vector<std::shared_ptr<Data>> dataSegment;
+        Name dataName(baseName);
+        Block encodedName = dataName.wireEncode();
+        size_t nameSize = encodedName.size();
+        size_t availableSpace = maxSegmentSize - nameSize;
+
+        std::cout << "Available space for content: " << availableSpace << std::endl;
+
+        std::string::const_iterator dataIterator = inputData.begin();
+
+        while (dataIterator != inputData.end())
+        {
+          Name segmentName(dataName);
+          size_t segmentDataSize = std::min(static_cast<size_t>(availableSpace), static_cast<size_t>(inputData.end() - dataIterator));
+          std::vector<uint8_t> buffer(dataIterator, dataIterator + segmentDataSize);
+          dataIterator += segmentDataSize;
+
+          auto segment = std::make_shared<Data>(segmentName.appendSegment(dataSegment.size()));
+          std::cout << "Preparing Data segment: " << segment->getName() << " Segment #: " << dataSegment.size() << std::endl;
+          segment->setFreshnessPeriod(10_s);
+
+          std::string_view content(reinterpret_cast<const char *>(buffer.data()), buffer.size());
+          segment->setContent(content);
+          dataSegment.push_back(segment);
+        }
+
+        // final block id を設定
+        auto finalBlockId = name::Component::fromSegment(dataSegment.size() - 1);
+        std::cout << "Final Block ID: " << finalBlockId.toSegment() << std::endl;
+        for (auto &segment : dataSegment)
+        {
+          segment->setFinalBlock(finalBlockId);
+        }
+
+        return dataSegment;
+      }
+
+    public:
+      std::vector<std::future<void>> futures;
+      Face m_face;
+      KeyChain m_keyChain;
+      ScopedRegisteredPrefixHandle m_certServeHandle;
+      std::size_t maxSegmentSize = 100;
+
+      std::map<std::string, std::map<uint64_t, std::shared_ptr<const Data>>> receiveBuffer;
+      std::map<std::string, std::vector<std::shared_ptr<Data>>> dataSegments;
+      std::map<std::string, uint64_t> incomingFinalBlockNumber;
+    }; // namespace examples
+  }    // namespace ndn
+}
