@@ -13,12 +13,12 @@
 ```
 データ
 /B/data: 22.6
-/C/data: 21.3
+/C/data: 10.3
 /D/data: -1.2
 /E/data: -15.1
-/F/data: 13.1
-/G/data: 14.1
-/H/data: 50.2
+/F/data: 10.1
+/G/data: 29.1
+/H/data: 3.0
 
 期待する出力
 8.40000
